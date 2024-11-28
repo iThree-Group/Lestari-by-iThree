@@ -8526,14 +8526,6 @@ html:has(.drawer-open.drawer-open){
   left: 50%;
 }
 
-.right-2{
-  right: 0.5rem;
-}
-
-.top-2{
-  top: 0.5rem;
-}
-
 .isolate{
   isolation: isolate;
 }
@@ -8713,18 +8705,6 @@ html:has(.drawer-open.drawer-open){
   margin-top: 63px;
 }
 
-.mt-\[9px\]{
-  margin-top: 9px;
-}
-
-.mt-\[7px\]{
-  margin-top: 7px;
-}
-
-.mt-20{
-  margin-top: 5rem;
-}
-
 .box-border{
   box-sizing: border-box;
 }
@@ -8840,6 +8820,10 @@ html:has(.drawer-open.drawer-open){
   height: 1.25rem;
 }
 
+.h-7{
+  height: 1.75rem;
+}
+
 .h-8{
   height: 2rem;
 }
@@ -8924,12 +8908,8 @@ html:has(.drawer-open.drawer-open){
   height: 100vh;
 }
 
-.h-7{
-  height: 1.75rem;
-}
-
-.h-\[364px\]{
-  height: 364px;
+.min-h-\[121px\]{
+  min-height: 121px;
 }
 
 .min-h-\[204px\]{
@@ -8942,10 +8922,6 @@ html:has(.drawer-open.drawer-open){
 
 .min-h-screen{
   min-height: 100vh;
-}
-
-.min-h-\[121px\]{
-  min-height: 121px;
 }
 
 .w-1\/2{
@@ -9040,12 +9016,20 @@ html:has(.drawer-open.drawer-open){
   width: 50px;
 }
 
+.w-\[531px\]{
+  width: 531px;
+}
+
 .w-\[554px\]{
   width: 554px;
 }
 
 .w-\[593px\]{
   width: 593px;
+}
+
+.w-\[60px\]{
+  width: 60px;
 }
 
 .w-\[622px\]{
@@ -9084,28 +9068,12 @@ html:has(.drawer-open.drawer-open){
   width: 100%;
 }
 
-.w-\[550px\]{
-  width: 550px;
-}
-
-.w-\[531px\]{
-  width: 531px;
-}
-
-.w-\[60px\]{
-  width: 60px;
-}
-
 .min-w-\[475px\]{
   min-width: 475px;
 }
 
 .min-w-\[550px\]{
   min-width: 550px;
-}
-
-.min-w-\[457px\]{
-  min-width: 457px;
 }
 
 .max-w-\[238px\]{
@@ -9707,6 +9675,14 @@ html:has(.drawer-open.drawer-open){
   gap: 13px;
 }
 
+.gap-\[15px\]{
+  gap: 15px;
+}
+
+.gap-\[17px\]{
+  gap: 17px;
+}
+
 .gap-\[18px\]{
   gap: 18px;
 }
@@ -9749,18 +9725,6 @@ html:has(.drawer-open.drawer-open){
 
 .gap-\[9px\]{
   gap: 9px;
-}
-
-.gap-\[15px\]{
-  gap: 15px;
-}
-
-.gap-\[17px\]{
-  gap: 17px;
-}
-
-.gap-\[7px\]{
-  gap: 7px;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]){
@@ -10309,6 +10273,11 @@ html:has(.drawer-open.drawer-open){
   background-color: rgb(130 130 130 / var(--tw-bg-opacity, 1));
 }
 
+.bg-\[\#95A5A6\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(149 165 166 / var(--tw-bg-opacity, 1));
+}
+
 .bg-\[\#ACE5AC\]{
   --tw-bg-opacity: 1;
   background-color: rgb(172 229 172 / var(--tw-bg-opacity, 1));
@@ -10327,6 +10296,11 @@ html:has(.drawer-open.drawer-open){
 .bg-\[\#E8F5E9\]{
   --tw-bg-opacity: 1;
   background-color: rgb(232 245 233 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#EB3223\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(235 50 35 / var(--tw-bg-opacity, 1));
 }
 
 .bg-\[\#F6AC0A\]{
@@ -10366,16 +10340,6 @@ html:has(.drawer-open.drawer-open){
 
 .bg-transparent{
   background-color: transparent;
-}
-
-.bg-\[\#95A5A6\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(149 165 166 / var(--tw-bg-opacity, 1));
-}
-
-.bg-\[\#EB3223\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(235 50 35 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-25{
@@ -10592,6 +10556,10 @@ html:has(.drawer-open.drawer-open){
   padding: 0.125rem;
 }
 
+.p-1\.5{
+  padding: 0.375rem;
+}
+
 .p-10{
   padding: 2.5rem;
 }
@@ -10616,10 +10584,6 @@ html:has(.drawer-open.drawer-open){
   padding: 34px;
 }
 
-.p-1\.5{
-  padding: 0.375rem;
-}
-
 .px-1{
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -10628,6 +10592,11 @@ html:has(.drawer-open.drawer-open){
 .px-1\.5{
   padding-left: 0.375rem;
   padding-right: 0.375rem;
+}
+
+.px-10{
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .px-2\.5{
@@ -10700,6 +10669,11 @@ html:has(.drawer-open.drawer-open){
   padding-right: 67px;
 }
 
+.px-\[83px\]{
+  padding-left: 83px;
+  padding-right: 83px;
+}
+
 .px-\[90px\]{
   padding-left: 90px;
   padding-right: 90px;
@@ -10725,6 +10699,11 @@ html:has(.drawer-open.drawer-open){
   padding-bottom: 5rem;
 }
 
+.py-24{
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
 .py-3{
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -10733,6 +10712,11 @@ html:has(.drawer-open.drawer-open){
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.py-7{
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
 }
 
 .py-9{
@@ -10750,39 +10734,14 @@ html:has(.drawer-open.drawer-open){
   padding-bottom: 35px;
 }
 
-.py-\[75px\]{
-  padding-top: 75px;
-  padding-bottom: 75px;
-}
-
-.px-10{
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-}
-
-.py-7{
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
-}
-
-.py-1\.5{
-  padding-top: 0.375rem;
-  padding-bottom: 0.375rem;
-}
-
-.py-24{
-  padding-top: 6rem;
-  padding-bottom: 6rem;
-}
-
 .py-\[42px\]{
   padding-top: 42px;
   padding-bottom: 42px;
 }
 
-.px-\[83px\]{
-  padding-left: 83px;
-  padding-right: 83px;
+.py-\[75px\]{
+  padding-top: 75px;
+  padding-bottom: 75px;
 }
 
 .pb-11{
@@ -11088,10 +11047,6 @@ html:has(.drawer-open.drawer-open){
 
 .leading-normal{
   line-height: 1.5;
-}
-
-.leading-\[7px\]{
-  line-height: 7px;
 }
 
 .leading-relaxed{

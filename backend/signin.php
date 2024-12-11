@@ -35,10 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../landing-page.php");
             exit;
         } else {
-            echo "Password salah!";
+            echo "<script>alert('Password Salah');
+            window.location.href = '../user/signin.php';</script>";
         }
     } else {
-        echo "Email tidak terdaftar!";
+        echo "<script>alert('Email tidak terdaftar');
+        window.location.href = '../user/signin.php';</script>";
     }
 
     $stmt->close();

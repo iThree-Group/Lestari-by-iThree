@@ -90,7 +90,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
                 <!-- Marketplace -->
                 <li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                    <button onclick="window.location.href='.../../user/marketplace/marketplace.php'">
+                    <button onclick="window.location.href='../../user/marketplace/marketplace.php'">
                         <p>Marketplace</p>
                     </button>
                     <?php else: ?>
@@ -151,7 +151,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
           <!-- Marketplace -->
           <li>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-              <button onclick="window.location.href='.../../user/marketplace/marketplace.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+              <button onclick="window.location.href='../../user/marketplace/marketplace.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
                 <img src="../../images/marketplace.png" class="w-8 h-8" alt="">
                 <p>Marketplace</p>
               </button>

@@ -10,10 +10,11 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Node.js dan npm
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm@latest
+# Salin file composer.json dan composer.lock terlebih dahulu
+COPY composer.json composer.lock /var/www/html/
+
+# Jalankan composer install
+RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html
 
 # Salin semua file proyek ke /var/www/html
 COPY . /var/www/html
@@ -23,12 +24,6 @@ RUN chown -R www-data:www-data /var/www/html
 
 # Aktifkan modul Apache rewrite
 RUN a2enmod rewrite
-
-# Jalankan composer update
-RUN composer update --working-dir=/var/www/html
-
-# Jalankan npm install
-RUN npm install --prefix /var/www/html
 
 # Tentukan port untuk aplikasi
 EXPOSE 80

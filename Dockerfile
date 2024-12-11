@@ -14,7 +14,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock /var/www/html/
 
 # Jalankan composer install
-RUN composer install --no-dev --optimize-autoloader --working-dir=/var/www/html
+RUN composer update --working-dir=/var/www/html
 
 # Salin semua file proyek ke /var/www/html
 COPY . /var/www/html

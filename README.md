@@ -27,3 +27,9 @@ Start the development server:
 ```bash
     http://localhost:8000
 ```
+
+- Update composer:
+
+```bash
+    composer update
+```

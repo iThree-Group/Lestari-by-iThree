@@ -91,58 +91,29 @@ $query = "
     JOIN detail_request dr ON dor.request_id = dr.request_id
     JOIN waste w ON dr.waste_id = w.waste_id
     JOIN users u ON dor.user_id = u.user_id
-    WHERE dor.status = 'accepted'
+    WHERE dor.bank_id = ?
+    AND dor.status = 'accepted'
     ORDER BY dor.drop_off_request_created_at DESC;
-
 ";
-$result = $conn->query($query);
 
-// Simpan data
-$activities = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $activities[] = $row;
+if ($stmt = $conn->prepare($query)) {
+    $stmt->bind_param("i", $bank_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $activities = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $activities[] = $row;
+        }
     }
+
+    $stmt->close();
+} else {
+    echo "Error: " . $conn->error;
 }
 
 $conn->close();
-// $data = [
-//     "total" => "2000",
-//     "writter" => "Writter 1",
-//     "category" => "Category 1",
-//     "price" => 10000,
-//     "stock" => 10];
-
-// $new_activity = [
-//     [
-//         "id" => 1,
-//         "username" => "Ahmad Sudrajat",
-//         "berat_sampah" => 5,
-//         "jenis_sampah" => "plastik",
-//         "status" => "pending"
-//     ],
-//     [
-//         "id" => 2,
-//         "username" => "Ahmad Sudrajat",
-//         "berat_sampah" => 5,
-//         "jenis_sampah" => "plastik",
-//         "status" => "success"
-//     ],
-//     [
-//         "id" => 3,
-//         "username" => "Ahmad Sudrajat",
-//         "berat_sampah" => 5,
-//         "jenis_sampah" => "plastik",
-//         "status" => "pending"
-//     ],
-//     [
-//         "id" => 4,
-//         "username" => "Ahmad Sudrajat",
-//         "berat_sampah" => 5,
-//         "jenis_sampah" => "plastik",
-//         "status" => "pending"
-//     ],
-// ]
 ?>
 
 <!DOCTYPE html>

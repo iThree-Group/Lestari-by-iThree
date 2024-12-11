@@ -1,34 +1,9 @@
 <?php
 include 'connect_admin.php';
 
-
-
-// Proses hapus reward
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
-
-    // Query untuk menghapus data dengan memeriksa bank_id yang login
-    $sql = "DELETE FROM rewards WHERE reward_id = ? AND bank_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $delete_id, $bank_id);  // Pastikan kedua parameter di-bind
-    if ($stmt->execute()) {
-        // Beri pesan jika penghapusan berhasil
-        $message = "Reward berhasil dihapus.";
-    } else {
-        // Pesan error jika penghapusan gagal
-        $message = "Gagal menghapus reward: " . $stmt->error;
-    }
-    $stmt->close();
-    
-    // Redirect kembali ke halaman kelola reward setelah penghapusan
-    header("Location: index.php?delete=success");
-    exit();
-}
-
-
 // Ambil data reward untuk diedit jika tombol edit ditekan
 $edit_data = null;
-$modal_open = false; // Tambahkan variabel kontrol untuk modal
+$modal_open = false; // Variabel kontrol untuk modal
 if (isset($_GET['edit_id'])) {
     $edit_id = $_GET['edit_id'];
     // Pastikan query mengembalikan data hanya jika bank_id sesuai
@@ -45,10 +20,6 @@ if (isset($_GET['saved'])) {
     $modal_open_edit = true; // Modal akan terbuka jika ada data edit
 }
 
-if (isset($_GET['delete'])) {
-    $modal_open_deleted = true; // Modal akan terbuka jika ada data dihapus
-}
-
 if (isset($_SESSION['flash_message'])) {
     $modal_open_added = true;
     unset($_SESSION['flash_message']);
@@ -59,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
     $reward_id = $_POST['reward_id'];
     $reward_name = $_POST['reward_name'];
     $reward_points_required = $_POST['reward_points_required'];
+    $stock = $_POST['stock']; // Ambil data stok dari form
 
     // Proses upload gambar jika ada
     $reward_image = $edit_data['reward_image'];
@@ -71,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
     // Cek apakah form sudah disubmit
     if (isset($_POST['update_reward'])) {
         // Query untuk memperbarui data di database, dengan memeriksa bank_id
-        $sql = "UPDATE rewards SET reward_name = ?, reward_points_required = ?, reward_image = ? WHERE reward_id = ? AND bank_id = ?";
+        $sql = "UPDATE rewards SET reward_name = ?, reward_points_required = ?, stock = ?, reward_image = ? WHERE reward_id = ? AND bank_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssis", $reward_name, $reward_points_required, $reward_image, $reward_id, $bank_id);
+        $stmt->bind_param("ssisii", $reward_name, $reward_points_required, $stock, $reward_image, $reward_id, $bank_id);
 
         // Eksekusi query dan cek apakah berhasil
         if ($stmt->execute()) {
@@ -91,8 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
         }
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -155,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                     </div>
                     <ul
                         tabindex="0"
-                        class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
+                            class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
                         <li><a href="../pengaturan/profil.php" class="flex flex-row gap-[10px] mb-[15px]">
                             <img src="../../images/admin/Profile.png" class="w-[30px]" alt="Profile">
                             <p class="text-xl font-normal">Profile</p>
@@ -164,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                             <img src="../../images/admin/Settings-profile.png" class="w-[30px]" alt="Settings">
                             <p class="text-xl font-normal">Pengaturan</p>
                         </a></li>
-                        <hr class="h-[2px] w-full text-gray my-6">
-                        <li>
+                            <hr class="h-[2px] w-full text-gray my-6">
+                            <li>
                               <form action="../signout.php" method="POST" id="signOutForm" class="flex flex-row gap-[10px]">
                                 <button type="submit" style="display: none;" id="signOutButton"></button>
                                 <a href="javascript:void(0);" onclick="document.getElementById('signOutForm').submit();" class="flex flex-row gap-[10px]">
@@ -174,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                                 </a>
                               </form>
                            </li>
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
             <!-- HEADER END -->
             
             <!-- BUTTONS -->
@@ -237,20 +207,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                     while ($row = $result->fetch_assoc()): ?>
                         <div class="bg-light w-auto h-auto shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] px-1.5 pb-[15px]">
                             <figure class="pt-[7px]">
-                                <img src="<?= htmlspecialchars($row['reward_image'] ?? 'default.jpg'); ?>"
-                                    alt="Reward Image"
+                                <img src="<?= htmlspecialchars($row['reward_image'] ?? 'default.jpg'); ?>" 
+                                    alt="Reward Image" 
                                     class="rounded-[15px]" />
                             </figure>
                             <div class="mt-[31px] gap-[9px] flex flex-col">
                                 <h2 class="text-dark text-[15px] font-extrabold"><?= htmlspecialchars($row['reward_name']); ?></h2>
                                 <p class="text-xs text-dark font-normal max-w-[238px]">Poin: <?= htmlspecialchars($row['reward_points_required']); ?></p>
+                                <p class="text-xs text-dark font-normal max-w-[238px]">Stok: <?= htmlspecialchars($row['stock']); ?></p> <!-- Menampilkan stok -->
                             </div>
                             <div class="mt-[50px] h-5 flex flex-row justify-between align-middle">
                                 <a href="?edit_id=<?= htmlspecialchars($row['reward_id']); ?>">
                                     <button class="bg-[#2ECC71] h-full w-[72px] rounded-[10px] text-[10px] font-semibold text-light">Edit</button>
-                                </a>
-                                <a href="javascript:void(0)" onclick="showDeleteDialog(<?= htmlspecialchars($row['reward_id']); ?>)">
-                                    <button class="bg-[#C0392B] h-full w-[72px] rounded-[10px] text-[10px] font-semibold text-light">Hapus</button>
                                 </a>
                             </div>
                         </div>
@@ -309,27 +277,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
 
             <!-- Modal Edit Reward (form untuk mengedit data) -->
             <?php if ($edit_data): ?>
-                 <dialog id="edit" class="modal" <?= $modal_open ? 'open' : ''; ?>>
-                     <div class="modal-box bg-light min-w-[550px] h-auto rounded-[20px] gap-[18px] flex flex-col px-10 py-7">
-                         <h3 class="text-2xl font-bold text-dark">Edit Produk</h3>
-                         <form method="post" enctype="multipart/form-data" class="flex flex-col gap-[18px] w-full text-dark">
+                <dialog id="edit" class="modal" <?= $modal_open ? 'open' : ''; ?>>
+                    <div class="modal-box bg-light min-w-[550px] h-auto rounded-[20px] gap-[18px] flex flex-col px-10 py-7">
+                        <h3 class="text-2xl font-bold text-dark">Edit Produk</h3>
+                        <form method="post" enctype="multipart/form-data" class="flex flex-col gap-[18px] w-full text-dark">
                             <input type="hidden" name="reward_id" value="<?= htmlspecialchars($edit_data['reward_id']); ?>" />
+                            
+                            <!-- Nama Produk -->
                             <div class="flex flex-col gap-[9px]">
-                                <label for="nama-produk" class="text-sm font-medium">Nama Produk</label>
+                                <label for="reward_name" class="text-sm font-medium">Nama Produk</label>
                                 <input type="text" id="reward_name" name="reward_name" value="<?= htmlspecialchars($edit_data['reward_name']); ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
                             </div>
+                            
+                            <!-- Jumlah Poin -->
                             <div class="flex flex-col gap-[9px]">
-                                <label for="jumlah-poin" class="text-sm font-medium">Jumlah Poin</label>
+                                <label for="reward_points_required" class="text-sm font-medium">Jumlah Poin</label>
                                 <input type="number" id="reward_points_required" name="reward_points_required" value="<?= $edit_data['reward_points_required']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
                             </div>
+                            
+                            <!-- Stok -->
+                            <div class="flex flex-col gap-[9px]">
+                                <label for="stock" class="text-sm font-medium">Stok</label>
+                                <input type="number" id="stock" name="stock" value="<?= $edit_data['stock']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
+                            </div>
+
+                            <!-- Gambar -->
+                            <div class="flex flex-col gap-[9px]">
+                                <label for="reward_image" class="text-sm font-medium">Gambar Produk</label>
+                                <!-- Tampilkan gambar saat ini -->
+                                <img src="<?= htmlspecialchars($edit_data['reward_image']); ?>" alt="Gambar Produk" class="w-20 h-20 object-cover rounded-md border">
+                                <!-- Input file untuk mengganti gambar -->
+                                <input type="file" id="reward_image" name="reward_image" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" accept="image/*">
+                                <small class="text-gray-500 text-xs">Kosongkan jika tidak ingin mengganti gambar.</small>
+                            </div>
+                            
+                            <!-- Tombol Aksi -->
                             <div class="flex flex-row-reverse gap-[15px] mt-2 items-end">
-                                 <button type="submit" name="update_reward" class="bg-[#2ECC71] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Simpan Perubahan</button>
-                                 <button type="button" onclick="document.getElementById('edit').close();" class="bg-[#95A5A6] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Batal</button>
+                                <button type="submit" name="update_reward" class="bg-[#2ECC71] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Simpan Perubahan</button>
+                                <button type="button" onclick="document.getElementById('edit').close();" class="bg-[#95A5A6] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Batal</button>
                             </div>
                         </form>
-                      </div>
+                    </div>
                 </dialog>
             <?php endif; ?>
+
 
             <dialog id="saved" class="modal"  <?= $modal_open_edit ? 'open' : ''; ?>>
                 <div class="modal-box bg-light w-[593px] h-auto rounded-[20px] gap-10 flex flex-col items-center py-[75px]">
@@ -341,68 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                 </form>
             </dialog>
 
-           <!-- Dialog Konfirmasi Hapus -->
-           <dialog id="delete" class="modal">
-               <div class="modal-box bg-light w-auto h-auto rounded-[20px] gap-[17px] flex flex-col items-center py-[42px] px-[83px]">
-                    <img src="../../images/admin/delete-alert.png" class="w-[60px]" alt="">
-                    <h3 class="text-[20px] font-bold text-center text-dark">Konfirmasi Hapus</h3>
-                    <p class="text-center text-xs font-normal text-dark leading-relaxed">Apakah Anda yakin ingin menghapus informasi ini?<br>
-                      Tindakan ini tidak dapat dibatalkan</p>
-                    <div class="mt-10">
-                        <form method="dialog" class="flex flex-row-reverse items-end gap-[18px]">
-                          <!-- Tombol Ya, Hapus -->
-                          <button type="button" onclick="confirmDelete()" class="bg-[#EB3223] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Ya, Hapus</button>
-                          <!-- Tombol Batal -->
-                          <button type="button" onclick="closeDeleteDialog()" class="bg-[#95A5A6] h-auto w-auto px-[14px] py-2 rounded-[10px] text-xs font-semibold text-light">Batal</button>
-                        </form>
-                    </div>
-                </div>                
-            </dialog>
-
-           <!-- Dialog Data Berhasil Dihapus -->
-           <dialog id="deleted" class="modal">
-               <div class="modal-box bg-light w-[531px] h-auto py-24 rounded-[20px] gap-6 flex flex-col items-center align-middle content-center">
-                    <h3 class="text-[32px] font-bold text-center text-dark">Data berhasil dihapus</h3>
-                    <img src="../../images/admin/checklist.png" class="w-[100px]" alt="">
-                </div>
-                <form method="dialog" class="modal-backdrop bg-light bg-opacity-25">
-                    <button type="button" onclick="closeDeletedDialog()"> </button>
-                </form>
-           </dialog>
-
-        <script>
-           let rewardIdToDelete = null;
-
-            // Menampilkan dialog konfirmasi hapus
-            function showDeleteDialog(rewardId) {
-                 rewardIdToDelete = rewardId;  // Menyimpan reward_id yang akan dihapus
-                 document.getElementById('delete').showModal();
-            }
-
-            // Menutup dialog konfirmasi hapus
-            function closeDeleteDialog() {
-                  document.getElementById('delete').close();
-            }
-
-            // Menampilkan dialog "Data berhasil dihapus"
-            function showDeletedDialog() {
-                  document.getElementById('delete').close();  // Menutup dialog konfirmasi
-                  document.getElementById('deleted').showModal();  // Menampilkan dialog sukses
-            }
-
-            // Fungsi Konfirmasi Penghapusan
-            function confirmDelete() {
-                if (rewardIdToDelete) {
-                   // Redirect ke halaman PHP untuk menghapus data
-                    window.location.href = "?delete_id=" + rewardIdToDelete;
-                }
-            }
-
-            // Menutup dialog "Data berhasil dihapus"
-              function closeDeletedDialog() {
-                 document.getElementById('deleted').close();
-            }
-        </script>
+         
 
         </div>
     </div>

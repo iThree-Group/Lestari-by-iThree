@@ -1,36 +1,36 @@
 <?php
 include 'connect_admin.php';
 
-
-
-// Proses tambah reward
+// Proses tambah produk baru
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
     $reward_name = $_POST['reward_name'];
     $reward_points_required = $_POST['reward_points_required'];
+    $stock = intval($_POST['stock']); // Ambil nilai stok dari input pengguna
 
     // Proses upload gambar
     $target_dir = "uploads/";
     $reward_image = $target_dir . basename($_FILES['reward_image']['name']);
     if (move_uploaded_file($_FILES['reward_image']['tmp_name'], $reward_image)) {
-        // Tambahkan bank_id ke dalam query INSERT
-        $sql = "INSERT INTO rewards (reward_name, reward_points_required, reward_image, bank_id) VALUES (?, ?, ?, ?)";
+        // Query insert dengan kolom stock
+        $sql = "INSERT INTO rewards (reward_name, reward_points_required, reward_image, stock, bank_id) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sisi", $reward_name, $reward_points_required, $reward_image, $bank_id);
+        $stmt->bind_param("sisii", $reward_name, $reward_points_required, $reward_image, $stock, $bank_id);
+
         if ($stmt->execute()) {
-            $message = "Reward berhasil ditambahkan.";
-            $_SESSION['flash_message'] = "success";
+            $message = "Produk berhasil ditambahkan.";
         } else {
-            $message = "Gagal menambahkan reward: " . $stmt->error;
+            $message = "Gagal menambahkan produk: " . $stmt->error;
         }
         $stmt->close();
-        header("Location: index.php");
+        header("Location: ./");
         exit();
     } else {
         $message = "Gagal mengupload gambar.";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
         <div class="bg-light-bg-content w-full h-auto pb-11 px-5 pt-5">
             <!-- HEADER -->
             <div class="flex flex-row justify-between bg-gradient-to-r from-[#1E5E3F] to-[#3FC483] w-full h-[88px] px-[23px] rounded-[20px] text-light font-extrabold text-[32px] items-center">
-                <h1>Kelola Reward</h1>
+                <h1>Statistik & Laporan</h1>
                 <div class="dropdown dropdown-end self-center">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                         <div class="w-[50px] rounded-full">
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
                     </div>
                     <ul
                         tabindex="0"
-                        class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
+                            class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
                         <li><a href="../pengaturan/profil.php" class="flex flex-row gap-[10px] mb-[15px]">
                             <img src="../../images/admin/Profile.png" class="w-[30px]" alt="Profile">
                             <p class="text-xl font-normal">Profile</p>
@@ -113,14 +113,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
                             <img src="../../images/admin/Settings-profile.png" class="w-[30px]" alt="Settings">
                             <p class="text-xl font-normal">Pengaturan</p>
                         </a></li>
-                        <hr class="h-[2px] w-full text-gray my-6">
-                        <li><a class="flex flex-row gap-[10px]">
-                            <img src="../../images/admin/sign-out.png" class="w-[30px]" alt="Sign Out">
-                            <p class="text-xl font-normal">Sign Out</p>
-                        </a></li>
-                    </ul>
+                            <hr class="h-[2px] w-full text-gray my-6">
+                            <li>
+                              <form action="../signout.php" method="POST" id="signOutForm" class="flex flex-row gap-[10px]">
+                                <button type="submit" style="display: none;" id="signOutButton"></button>
+                                <a href="javascript:void(0);" onclick="document.getElementById('signOutForm').submit();" class="flex flex-row gap-[10px]">
+                                    <img src="../../images/admin/sign-out.png" class="w-[30px]" alt="Sign Out">
+                                    <p class="text-xl font-normal">Sign Out</p>
+                                </a>
+                              </form>
+                           </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
             <!-- HEADER END -->
             
             <!-- ADD TUTORIAL -->
@@ -157,6 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
                         <label for="reward_points_required"  class="px-1 text-2xl font-medium">Jumlah Poin</label>
                         <input type="number" id="reward_points_required" name="reward_points_required"  min="0" placeholder="Masukkan Jumlah Poin" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" required>
                     </div>
+                    <div class="flex flex-col gap-[10px] w-full">
+                        <label for="stock" class="px-1 text-2xl font-medium">Stok Produk</label>
+                        <input type="number" id="stock" name="stock" min="0" placeholder="Masukkan Jumlah Stok" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" required>
+                    </div>
+
                     <div class="flex flex-col gap-[10px] w-full">
                         <label for="reward_image" class="px-1 text-2xl font-medium">Gambar Produk</label>
                         <div class="w-full min-h-[204px] bg-light border-dashed border-2 border-gray py-3 font-light flex items-center justify-center">

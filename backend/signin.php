@@ -1,14 +1,15 @@
 <?php
 session_start();  // Memulai sesi
-
 require '../controller/config.php';  // File koneksi ke database
 
+// Menangani POST request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     if (empty($email) || empty($password)) {
-        echo "Email dan password harus diisi!";
+        $_SESSION['error_message'] = "Email dan password harus diisi!";
+        header("Location: ../user/signin-form.php");
         exit;
     }
 
@@ -30,15 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_email'] = $user['user_email'];
             $_SESSION['user_name'] = $user['user_name'];  // Menyimpan nama pengguna dalam sesi
 
-
             // Redirect ke landing page
             header("Location: ../landing-page.php");
             exit;
         } else {
-            echo "Password salah!";
+            $_SESSION['error_message'] = "Password salah!";
+            header("Location: ../user/signin.php");
+            exit;
         }
     } else {
-        echo "Email tidak terdaftar!";
+        $_SESSION['error_message'] = "Email tidak terdaftar!";
+        header("Location: ../user/signin.php");
+        exit;
     }
 
     $stmt->close();

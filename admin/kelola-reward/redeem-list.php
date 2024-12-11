@@ -65,9 +65,9 @@ $redeem_result = $stmt->get_result();
 
         <!-- CONTENT -->
         <div class="bg-light-bg-content w-full h-auto pb-11 px-5 pt-5">
-            <!-- HEADER -->
-            <div class="flex flex-row justify-between bg-gradient-to-r from-[#1E5E3F] to-[#3FC483] w-full h-[88px] px-[23px] rounded-[20px] text-light font-extrabold text-[32px] items-center">
-                <h1>Kelola Reward</h1>
+             <!-- HEADER -->
+             <div class="flex flex-row justify-between bg-gradient-to-r from-[#1E5E3F] to-[#3FC483] w-full h-[88px] px-[23px] rounded-[20px] text-light font-extrabold text-[32px] items-center">
+                <h1>Statistik & Laporan</h1>
                 <div class="dropdown dropdown-end self-center">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                         <div class="w-[50px] rounded-full">
@@ -78,7 +78,7 @@ $redeem_result = $stmt->get_result();
                     </div>
                     <ul
                         tabindex="0"
-                        class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
+                            class="menu menu-sm dropdown-content bg-light rounded-[10px] z-[1] mt-3 w-[233px] py-6 border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] text-dark">
                         <li><a href="../pengaturan/profil.php" class="flex flex-row gap-[10px] mb-[15px]">
                             <img src="../../images/admin/Profile.png" class="w-[30px]" alt="Profile">
                             <p class="text-xl font-normal">Profile</p>
@@ -87,14 +87,19 @@ $redeem_result = $stmt->get_result();
                             <img src="../../images/admin/Settings-profile.png" class="w-[30px]" alt="Settings">
                             <p class="text-xl font-normal">Pengaturan</p>
                         </a></li>
-                        <hr class="h-[2px] w-full text-gray my-6">
-                        <li><a class="flex flex-row gap-[10px]">
-                            <img src="../../images/admin/sign-out.png" class="w-[30px]" alt="Sign Out">
-                            <p class="text-xl font-normal">Sign Out</p>
-                        </a></li>
-                    </ul>
+                            <hr class="h-[2px] w-full text-gray my-6">
+                            <li>
+                              <form action="../signout.php" method="POST" id="signOutForm" class="flex flex-row gap-[10px]">
+                                <button type="submit" style="display: none;" id="signOutButton"></button>
+                                <a href="javascript:void(0);" onclick="document.getElementById('signOutForm').submit();" class="flex flex-row gap-[10px]">
+                                    <img src="../../images/admin/sign-out.png" class="w-[30px]" alt="Sign Out">
+                                    <p class="text-xl font-normal">Sign Out</p>
+                                </a>
+                              </form>
+                           </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
             <!-- HEADER END -->
             
             <!-- BUTTONS -->

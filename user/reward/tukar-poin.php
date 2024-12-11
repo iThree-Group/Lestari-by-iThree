@@ -1,8 +1,8 @@
 <?php
-session_start();  // Pastikan session sudah dimulai
+session_start(); // Pastikan session sudah dimulai
 
 // Koneksi ke database
-include '../../controller/config.php';  // Sesuaikan dengan path file database.php
+include '../../controller/config.php'; // Sesuaikan dengan path file database.php
 
 // Cek apakah pengguna sudah login
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -10,63 +10,115 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit();
 }
 
-// Ambil user_id dari session
-$userId = $_SESSION['user_id'] ?? null;
+// Get user_id from session
+$user_id = $_SESSION['user_id']; // Pastikan 'user_id' disimpan di session
+
+$bank_id = isset($_GET['id']) ? intval($_GET['id']) : null;
+
+if (!$bank_id) {
+    die('Bank ID tidak ditemukan. Silakan coba lagi.');
+}
 
 // Hitung total poin pengguna
 $totalPoints = 0;
-if ($userId) {
-    $queryPoints = "
-        SELECT SUM(detail_request.points_earned) AS total_points
-        FROM drop_off_request
-        INNER JOIN detail_request ON drop_off_request.request_id = detail_request.request_id
-        WHERE drop_off_request.user_id = $userId
-    ";
-    $resultPoints = $conn->query($queryPoints);
-    if ($resultPoints && $resultPoints->num_rows > 0) {
-        $row = $resultPoints->fetch_assoc();
-        $totalPoints = $row['total_points'] ?? 0;
-    }
+$queryPoints = "
+    SELECT SUM(detail_request.points_earned) AS total_points
+    FROM drop_off_request
+    INNER JOIN detail_request ON drop_off_request.request_id = detail_request.request_id
+    WHERE drop_off_request.user_id = ?";
+$stmtPoints = $conn->prepare($queryPoints);
+$stmtPoints->bind_param("i", $user_id);
+$stmtPoints->execute();
+$resultPoints = $stmtPoints->get_result();
+if ($resultPoints && $resultPoints->num_rows > 0) {
+    $row = $resultPoints->fetch_assoc();
+    $totalPoints = $row['total_points'] ?? 0;
 }
+$stmtPoints->close();
 
-// Ambil daftar rewards
-$queryRewards = "SELECT reward_id, reward_name, reward_points_required, reward_image FROM rewards ORDER BY created_at DESC";
-$resultRewards = $conn->query($queryRewards);
+// Ambil daftar rewards sesuai dengan bank_id
+$queryRewards = "
+    SELECT reward_id, reward_name, reward_points_required, reward_image 
+    FROM rewards 
+    WHERE bank_id = ? 
+    ORDER BY created_at DESC";
+$stmtRewards = $conn->prepare($queryRewards);
+$stmtRewards->bind_param("i", $bank_id);
+$stmtRewards->execute();
+$resultRewards = $stmtRewards->get_result();
 
 // Proses tukar poin
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
-    $rewardId = intval($_POST['reward_id']);
-    $rewardPointsRequired = intval($_POST['reward_points_required']);
+  $rewardId = intval($_POST['reward_id']);
+  $rewardPointsRequired = intval($_POST['reward_points_required']);
 
-    if ($totalPoints >= $rewardPointsRequired) {
-        // Insert transaksi penukaran ke database
-        $stmt = $conn->prepare("INSERT INTO redeem (user_id, reward_id, status, created_at, updated_at) VALUES (?, ?, 'pending', NOW(), NOW())");
-        $stmt->bind_param("ii", $userId, $rewardId);
+  // Query untuk mengecek stok reward
+  $queryStock = "SELECT stock FROM rewards WHERE reward_id = ? AND bank_id = ?";
+  $stmtStock = $conn->prepare($queryStock);
+  $stmtStock->bind_param("ii", $rewardId, $bank_id);
+  $stmtStock->execute();
+  $resultStock = $stmtStock->get_result();
+  $stock = 0;
 
-        if ($stmt->execute()) {
-            // Kurangi total poin setelah berhasil ditukar
-            $totalPoints -= $rewardPointsRequired; 
-            // Kirimkan success response melalui JavaScript
-            echo "<script>
-                window.onload = function() {
-                    showSuccessPopup();
-                }
+  if ($resultStock && $resultStock->num_rows > 0) {
+      $row = $resultStock->fetch_assoc();
+      $stock = $row['stock']; // Ambil stok reward
+  }
+  $stmtStock->close();
+
+  // Cek apakah stok reward mencukupi
+  if ($stock > 0) {
+      // Cek apakah pengguna memiliki poin yang cukup
+      if ($totalPoints >= $rewardPointsRequired) {
+          // Insert transaksi penukaran ke database
+          $queryRedeem = "
+              INSERT INTO redeem (user_id, reward_id, bank_id, status, created_at, updated_at) 
+              VALUES (?, ?, ?, 'pending', NOW(), NOW())";
+          $stmtRedeem = $conn->prepare($queryRedeem);
+          $stmtRedeem->bind_param("iii", $user_id, $rewardId, $bank_id);
+
+          if ($stmtRedeem->execute()) {
+              // Kurangi total poin setelah berhasil ditukar
+              $totalPoints -= $rewardPointsRequired;
+
+              // Kurangi stok reward setelah berhasil redeem
+              $queryUpdateStock = "UPDATE rewards SET stock = stock - 1 WHERE reward_id = ?";
+              $stmtUpdateStock = $conn->prepare($queryUpdateStock);
+              $stmtUpdateStock->bind_param("i", $rewardId);
+              $stmtUpdateStock->execute();
+              $stmtUpdateStock->close();
+
+              echo "<script>
+                  window.onload = function() {
+                      document.getElementById('popupSuccess').classList.remove('hidden');
+                  };
               </script>";
-        } else {
-            // Gagal menyimpan data
-            echo "<script>
-                alert('Terjadi kesalahan saat memproses penukaran.');
+          } else {
+              echo "<script>
+                  alert('Terjadi kesalahan saat memproses penukaran.');
               </script>";
-        }
+          }
 
-        $stmt->close();
-    } else {
-        echo "<script>
-            alert('Poin Anda tidak mencukupi untuk menukarkan reward ini.');
-        </script>";
-    }
+          $stmtRedeem->close();
+      } else {
+          echo "<script>
+                  window.onload = function() {
+                      document.getElementById('popupPoinTidakCukup').classList.remove('hidden');
+                  };
+              </script>";
+      }
+  } else {
+      // Jika stok reward habis
+      echo "<script>
+                  window.onload = function() {
+                      document.getElementById('popupStockHabis').classList.remove('hidden');
+                  };
+              </script>";
+  }
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en" class="bg-light dark:[color-scheme:light]">
@@ -304,39 +356,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
     </script>
   <!-- NAVBAR END -->->
 
-<body class="font-poppins bg-gray-100">
-    <!-- Kontainer -->
-    <div class="bg-light flex flex-col items-center py-10">
-        <!-- Judul Halaman -->
-        <h1 class="text-3xl text-[#1B5E20] font-bold mb-8">Tukar Poin Reward</h1>
+                        <body class="font-poppins bg-gray-100"> 
+                          <!-- Kontainer -->
+                          <div class="bg-light flex flex-col items-center py-10">
+                              <!-- Judul Halaman -->
+                              <h1 class="text-3xl text-[#1B5E20] font-bold mb-8">Tukar Poin Reward</h1>
 
-        <!-- Pesan Status Penukaran -->
-        <?php if (!empty($redeemMessage)): ?>
-            <div class="bg-green-100 text-green-700 p-4 mb-6 rounded-lg shadow">
-                <?= htmlspecialchars($redeemMessage); ?>
-            </div>
-        <?php endif; ?>
+                              <!-- Pesan Status Penukaran -->
+                              <?php if (!empty($redeemMessage)): ?>
+                                  <div class="bg-green-100 text-green-700 p-4 mb-6 rounded-lg shadow">
+                                      <?= htmlspecialchars($redeemMessage); ?>
+                                  </div>
+                              <?php endif; ?>
 
-       <!-- Daftar Rewards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
-            <?php while ($reward = $resultRewards->fetch_assoc()): ?>
-                <div class="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col h-full">
-                    <div class="relative flex-shrink-0">
-                    <img src="<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">
-                        <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
-                            <p class="font-bold"><?= htmlspecialchars($reward['reward_name']); ?></p>
-                        </div>
-                        <div class="p-4">
-    <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>
-    <div class="flex justify-between items-center">
-        <p class="text-green-900 font-bold"><?= $reward['reward_points_required']; ?> Poin</p>
-        <button 
-            class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-full hover:bg-green-700"
-            onclick="togglePopup(<?= $reward['reward_id']; ?>, <?= $reward['reward_points_required']; ?>)">
-            Tukar
-        </button>
-    </div>
-</div>
+                            <!-- Daftar Rewards -->
+                              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
+                                  <?php while ($reward = $resultRewards->fetch_assoc()): ?>
+                                      <div class="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col h-full">
+                                          <div class="relative flex-shrink-0">
+                                          <img src="<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">
+                                              <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
+                                                  <p class="font-bold"><?= htmlspecialchars($reward['reward_name']); ?></p>
+                                              </div>
+                                              <div class="p-4">
+                          <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>
+                          <div class="flex justify-between items-center">
+                              <p class="text-green-900 font-bold"><?= $reward['reward_points_required']; ?> Poin</p>
+                              <button 
+                                  class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-full hover:bg-green-700"
+                                  onclick="togglePopup(<?= $reward['reward_id']; ?>, <?= $reward['reward_points_required']; ?>)">
+                                  Tukar
+                              </button>
+                          </div>
+                      </div>
 
                     </div>
                 </div>
@@ -377,13 +429,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
         </div>
         <h2 class="text-xl font-bold text-green-900 mb-2">Berhasil!</h2>
         <p class="text-gray-700 mb-4">Point Anda berhasil ditukarkan.</p>
-        <button onclick="closeSuccessPopup()" class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-md hover:bg-green-700">
-          Tutup
+      <button  onclick="window.location.href='../../user/drop-off/poin.php'"  class="bg-gradient-to-r from-green to-dark-green text-white py-2 px-4 rounded-full shadow-lg hover:bg-green-600">
+          Lihat Poin
         </button>
       </div>
     </div>
+    
+    <!-- Popup untuk Pesan Poin Tidak Cukup -->
+<div id="popupPoinTidakCukup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center">
+    <div class="flex justify-center mb-4">
+      <!-- Ikon X (Menandakan Gagal) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+    <h2 class="text-xl font-bold text-red-900 mb-2">Gagal!</h2>
+    <p class="text-gray-700 mb-4">Point Anda Tidak Cukup.</p>
+    <button onclick="closePoinTidakCukupPopup()" class="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded-md hover:bg-red-700">
+      Tutup
+    </button>
+  </div>
+</div>
+
+<!-- Popup untuk Pesan Stok Habis -->
+<div id="popupStockHabis" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center">
+    <div class="flex justify-center mb-4">
+      <!-- Ikon X (Menandakan Gagal) -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+    <h2 class="text-xl font-bold text-red-900 mb-2">Gagal!</h2>
+    <p class="text-gray-700 mb-4">Stock Sudah Habis.</p>
+    <button onclick="closeStockHabisPopup()" class="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded-md hover:bg-red-700">
+      Tutup
+    </button>
+  </div>
+</div>
 
 <script>
+    // Fungsi untuk menutup popup sukses
+    function closeSuccessPopup() {
+    const successPopup = document.getElementById("popupSuccess");
+    successPopup.classList.add("hidden");
+  }
+  function closeStockHabisPopup() {
+    const successPopup = document.getElementById("popupStockHabis");
+    successPopup.classList.add("hidden");
+  }
+  
+  function closePoinTidakCukupPopup() {
+    const successPopup = document.getElementById("popupPoinTidakCukup");
+    successPopup.classList.add("hidden");
+  }
   // Fungsi untuk menampilkan popup sukses
   function showSuccessPopup() {
     const successPopup = document.getElementById("popupSuccess");
@@ -394,12 +494,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
       successPopup.classList.add("hidden");
     }, 3000);
   }
-  
-  // Fungsi untuk menutup popup sukses
-  function closeSuccessPopup() {
-    const successPopup = document.getElementById("popupSuccess");
-    successPopup.classList.add("hidden");
+  function showSuccessPopup() {
+    const successPopup = document.getElementById("popupPoinTidakCukup");
+    successPopup.classList.remove("hidden");
+
+    // Sembunyikan popup sukses secara otomatis setelah 3 detik
+    setTimeout(function() {
+      successPopup.classList.add("hidden");
+    }, 3000);
   }
+  function showSuccessPopup() {
+    const successPopup = document.getElementById("popupStockHabis");
+    successPopup.classList.remove("hidden");
+
+    // Sembunyikan popup sukses secara otomatis setelah 3 detik
+    setTimeout(function() {
+      successPopup.classList.add("hidden");
+    }, 3000);
+  }
+  
+
 </script>
 
 </body>

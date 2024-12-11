@@ -10,11 +10,25 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+// Ambil informasi bank_id dari admin yang login
+$adminId = $_SESSION['admin_id'];
+$bankIdQuery = "SELECT bank_id FROM admin WHERE admin_id = $adminId";
+$bankIdResult = $conn->query($bankIdQuery);
 
-// Inisialisasi nilai default untuk poin
+if ($bankIdResult->num_rows > 0) {
+    $bankData = $bankIdResult->fetch_assoc();
+    $bankId = $bankData['bank_id']; // ID bank terkait admin
+} else {
+    echo "<p style='color: red; text-align: center;'>Bank tidak ditemukan untuk admin ini!</p>";
+    exit();
+}
+
+// Inisialisasi nilai default
 $plastikPoint = $kertasPoint = $logamPoint = 0;
+$jamOperasional = "";
+$jamError = false;
 
-// Ambil data dari database
+// Ambil data poin sampah
 $sql = "SELECT waste_name, waste_point FROM waste WHERE waste_name IN ('Plastik', 'Kertas', 'Logam')";
 $result = $conn->query($sql);
 
@@ -34,25 +48,63 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Ambil data operasional bank terkait admin
+$bankQuery = "SELECT bank_operating_hours FROM bank_locations WHERE bank_id = $bankId";
+$bankResult = $conn->query($bankQuery);
+
+if ($bankResult->num_rows > 0) {
+    $bankData = $bankResult->fetch_assoc();
+    $operatingHours = $bankData['bank_operating_hours'];
+} else {
+    $jamOperasional = "";
+}
+
 // Perbarui data saat form dikirim
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Tangkap data dari form
     $plastikPoint = $_POST['poin-plastik'];
     $kertasPoint = $_POST['poin-kertas'];
     $logamPoint = $_POST['poin-logam'];
+    $jamOperasional = $_POST['jam-operasional']; // Ambil nilai jam operasional dari form
 
-    $updateQuery = "
-        UPDATE waste 
-        SET waste_point = CASE waste_name
-            WHEN 'Plastik' THEN $plastikPoint
-            WHEN 'Kertas' THEN $kertasPoint
-            WHEN 'Logam' THEN $logamPoint
-        END
-        WHERE waste_name IN ('Plastik', 'Kertas', 'Logam')";
-    
-    if ($conn->query($updateQuery) === TRUE) {
-        echo "<p style='color: green; text-align: center;'>Data berhasil diperbarui!</p>";
-    } else {
-        echo "<p style='color: red; text-align: center;'>Error: " . $conn->error . "</p>";
+    // Mulai transaksi untuk update data
+    $conn->begin_transaction();
+
+    try {
+        // Update poin sampah
+        $updateQuery = "
+            UPDATE waste 
+            SET waste_point = CASE waste_name
+                WHEN 'Plastik' THEN $plastikPoint
+                WHEN 'Kertas' THEN $kertasPoint
+                WHEN 'Logam' THEN $logamPoint
+            END
+            WHERE waste_name IN ('Plastik', 'Kertas', 'Logam')";
+        
+        if (!$conn->query($updateQuery)) {
+            throw new Exception("Error updating waste points: " . $conn->error);
+        }
+
+        // Validasi format jam operasional (contoh format: "08:00 - 17:00")
+        if (!preg_match("/^([01]?[0-9]|2[0-3]):([0-5][0-9]) - ([01]?[0-9]|2[0-3]):([0-5][0-9])$/", $jamOperasional)) {
+            throw new Exception("Format jam operasional tidak sesuai. Format yang benar: HH:MM - HH:MM");
+        }
+
+        // Update jam operasional ke database jika valid
+        $stmt = $conn->prepare("UPDATE bank_locations SET bank_operating_hours = ? WHERE bank_id = ?");
+        $stmt->bind_param("si", $jamOperasional, $bankId);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error updating operating hours: " . $stmt->error);
+        }
+
+        // Commit transaksi jika tidak ada error
+        $conn->commit();
+        echo "<script>showModal(true);</script>"; // Menampilkan dialog "Data berhasil disimpan"
+    } catch (Exception $e) {
+        // Rollback transaksi jika ada error
+        $conn->rollback();
+        echo "<script>showModal(false);</script>"; // Menampilkan dialog "Data ditolak"
     }
 }
 ?>
@@ -142,53 +194,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- HEADER END -->
 
             <!-- TABLE -->
-             <div class="bg-light rounded-[10px] w-full h-auto shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] flex flex-col p-8 mt-[46px] text-dark gap-10">
-                <form method="POST" action="" class="flex flex-col gap-11">
-                    <div class="flex flex-col gap-2">
-                        <h2 class="text-2xl font-bold text-dark">Pengaturan Poin</h2>
-                        <div class="flex flex-row gap-10">
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="poin-plastik" class="text-sm font-medium">Point per Kg Plastik</label>
-                                <input type="number" id="poin-plastik" name="poin-plastik" min="0" value="<?= htmlspecialchars($plastikPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="poin-kertas" class="text-sm font-medium">Point per Kg Kertas</label>
-                                <input type="number" id="poin-kertas" name="poin-kertas" min="0" value="<?= htmlspecialchars($kertasPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="poin-logam" class="text-sm font-medium">Point per Kg Logam</label>
-                                <input type="number" id="poin-logam" name="poin-logam" min="0" value="<?= htmlspecialchars($logamPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <h2 class="text-2xl font-bold text-dark">Pengaturan Sistem</h2>
-                        <div class="flex flex-row gap-10">
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="jam-operasional-buka" class="text-sm font-medium">Jam operasional (Buka)</label>
-                                <input type="time" id="jam-operasional-buka" name="jam-operasional-buka" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="jam-operasional-tutup" class="text-sm font-medium">Jam operasional (Tutup)</label>
-                                <input type="time" id="jam-operasional-tutup" name="jam-operasional-tutup" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="flex flex-col gap-2">
-                        <h2 class="text-2xl font-bold text-dark">Informasi Akun Admin</h2>
-                        <div class="flex flex-row gap-10">
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="email" class="text-sm font-medium">Email</label>
-                                <input type="email" id="email" name="email" value="admin1@gmail.com" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                            <div class="flex flex-col gap-2 w-[283px]">
-                                <label for="password" class="text-sm font-medium">Password</label>
-                                <input type="password" id="password" name="password" value="Adminbank1" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
-                            </div>
-                        </div>
-                    </div> -->
-                    <button type="submit" onclick="getElementById('saved').showModal()" class="bg-[#2ECC71] mt-10 h-auto w-auto place-self-center px-4 py-2 rounded-[10px] text-sm font-semibold text-light">Simpan Pengaturan</button>
-                </form>
+            <div class="bg-light rounded-[10px] w-full h-auto shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] flex flex-col p-8 mt-[46px] text-dark gap-10">
+            <form method="POST" action="" class="flex flex-col gap-11" onsubmit="return validateAndSubmit()">
+    <div class="flex flex-col gap-2">
+        <h2 class="text-2xl font-bold text-dark">Pengaturan Poin</h2>
+        <div class="flex flex-row gap-10">
+            <div class="flex flex-col gap-2 w-[283px]">
+                <label for="poin-plastik" class="text-sm font-medium">Point per Kg Plastik</label>
+                <input type="number" id="poin-plastik" name="poin-plastik" min="0" value="<?= htmlspecialchars($plastikPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
+            </div>
+            <div class="flex flex-col gap-2 w-[283px]">
+                <label for="poin-kertas" class="text-sm font-medium">Point per Kg Kertas</label>
+                <input type="number" id="poin-kertas" name="poin-kertas" min="0" value="<?= htmlspecialchars($kertasPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
+            </div>
+            <div class="flex flex-col gap-2 w-[283px]">
+                <label for="poin-logam" class="text-sm font-medium">Point per Kg Logam</label>
+                <input type="number" id="poin-logam" name="poin-logam" min="0" value="<?= htmlspecialchars($logamPoint); ?>" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base dark:[color-scheme:light]">
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col gap-2">
+        <h2 class="text-2xl font-bold text-dark">Pengaturan Sistem</h2>
+        <div class="flex flex-row gap-10">
+            <div class="flex flex-col gap-2 w-[283px]">
+                <label for="jam-operasional" class="text-sm font-medium">Jam operasional (Buka - Tutup)</label>
+                <input type="text" id="jam-operasional" name="jam-operasional" value="<?= htmlspecialchars($jamOperasional); ?>" placeholder="08:00 - 17:00" class="w-full h-10 bg-light border border-gray px-1.5 font-normal rounded-[5px] text-base">
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="bg-[#2ECC71] mt-10 h-auto w-auto place-self-center px-4 py-2 rounded-[10px] text-sm font-semibold text-light">Simpan Pengaturan</button>
+</form>
+<script>
+    // Fungsi untuk menampilkan dialog yang sesuai berdasarkan kondisi input
+    function showModal(isSaved) {
+        if (isSaved) {
+            document.getElementById('saved').showModal();  // Tampilkan dialog berhasil
+        } else {
+            document.getElementById('denied').showModal(); // Tampilkan dialog ditolak
+        }
+    }
+
+    // Fungsi untuk validasi input dan pengiriman data
+    function validateAndSubmit() {
+        const jamOperasional = document.getElementById('jam-operasional').value;
+        const jamPattern = /^([01]?[0-9]|2[0-3]):([0-5][0-9]) - ([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
+        
+        // Validasi format jam operasional
+        if (jamOperasional && !jamOperasional.match(jamPattern)) {
+            // Kosongkan input dan tampilkan error
+            document.getElementById('jam-operasional').value = "";
+            showModal(false); // Tampilkan dialog ditolak
+            return false; // Jangan lanjutkan pengiriman form
+        }
+
+        // Jika valid, kirimkan form dan tampilkan dialog sukses
+        showModal(true); // Tampilkan dialog sukses
+        return true; // Izinkan pengiriman form
+    }
+</script>
             </div>
 
             <!-- dialogs -->

@@ -6,7 +6,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Tambahkan ServerName ke konfigurasi Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-git
+
 # Salin semua file proyek ke /var/www/html
 COPY . /var/www/html
 

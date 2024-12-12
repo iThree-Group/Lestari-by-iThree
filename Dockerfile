@@ -16,5 +16,11 @@ RUN chown -R www-data:www-data /var/www/html
 # Aktifkan modul Apache rewrite
 RUN a2enmod rewrite
 
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Jalankan composer update
+RUN composer update --working-dir=/var/www/html
+
 # Tentukan port untuk aplikasi
 EXPOSE 80

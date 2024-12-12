@@ -276,9 +276,18 @@
                 <div class="swiper-button-next after:text-green"></div>
             </div>
             <div class="flex flex-row justify-between items-center mt-4">
-                <img src="../images/user/MSIB.png" class="w-[150px] lg:w-[100px] xl:w-[125px] 2xl:w-[150px]" alt="msib">
-                <img src="../images/user/kampus-merdeka.png" class="w-[150px] lg:w-[100px] xl:w-[125px] 2xl:w-[150px]" alt="kampus merdeka">
-                <img src="../images/user/ytta logo.png" class="w-[150px] lg:w-[100px] xl:w-[125px] 2xl:w-[150px]" alt="iThree logo">
+
+                  <img src="../images/user/MSIB.png" 
+                        class="md:w-[150px] w-[70px] xl:w-[125px] 2xl:w-[150px]" 
+                        alt="msib">
+                  
+                  <img src="../images/user/kampus-merdeka.png" 
+                        class="md:w-[150px] w-[70px] xl:w-[125px] 2xl:w-[150px] ml-4" 
+                        alt="kampus merdeka">
+
+                  <img src="../images/user/ytta logo.png" 
+                        class="md:w-[150px] w-[90px] xl:w-[125px] 2xl:w-[150px]" 
+                        alt="iThree logo">
             </div>
           </div>
           <script>

@@ -6,10 +6,10 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
 $dotenv->load();
 
-$host = $_ENV['HOST'];
-$user = $_ENV['USER'];
-$password = $_ENV['PASSWORD'];
-$dbname = $_ENV['DATABASE'];
+$host = 'db';
+$user = 'lestari';
+$password = 'password';
+$dbname = 'db_sampah_4';
 
 $conn = new mysqli($host, $user, $password, $dbname);
 

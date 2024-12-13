@@ -369,12 +369,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
                                   </div>
                               <?php endif; ?>
 
-                            <!-- Daftar Rewards -->
-                              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
+<!-- Daftar Rewards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-lg mx-auto">
                                   <?php while ($reward = $resultRewards->fetch_assoc()): ?>
                                       <div class="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col h-full">
                                           <div class="relative flex-shrink-0">
-                                          <img src="../../admin/kelola-reward/<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">                                              <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
+                                          <img src="../../admin/kelola-reward/<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">
+                                              <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
+                                                  <p class="font-bold"><?= htmlspecialchars($reward['reward_name']); ?></p>
                                               </div>
                                               <div class="p-4">
                           <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>
@@ -392,46 +394,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
                 </div>
             <?php endwhile; ?>
         </div>
-
-    <!-- Popup Konfirmasi -->
-    <div id="popupReward" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-[700px]">
-  <div class="flex items-center justify-center mb-4">
-    <img id="rewardImage" src="https://placehold.co/300x150" alt="Reward Image" class="rounded-lg shadow-md" />
-</div>
-<h2 id="rewardName" class="text-center text-2xl font-bold text-green-900 mb-4"></h2>
-<p class="text-gray-700 text-center mb-6">
-    Apakah Anda yakin ingin menukarkan point Anda dengan <span id="rewardNameDisplay"></span>? Point akan langsung terpotong setelah konfirmasi.
-</p>
-
-
-            <form method="POST">
-                <input type="hidden" id="reward_id" name="reward_id">
-                <input type="hidden" id="reward_points_required" name="reward_points_required">
-                <div class="flex justify-center gap-4">
-                    <button type="button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400" onclick="closePopup()">Batalkan</button>
-                    <button type="submit" name="redeem" class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-md hover:bg-green-700">Ya, Tukar Sekarang</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Popup untuk Pesan Sukses -->
-    <div id="popupSuccess" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-[400px] text-center">
-        <div class="flex justify-center mb-4">
-          <!-- Tanda Checklist -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h2 class="text-xl font-bold text-green-900 mb-2">Berhasil!</h2>
-        <p class="text-gray-700 mb-4">Point Anda berhasil ditukarkan.</p>
-      <button  onclick="window.location.href='../../user/drop-off/poin.php'"  class="bg-gradient-to-r from-green to-dark-green text-white py-2 px-4 rounded-full shadow-lg hover:bg-green-600">
-          Lihat Poin
-        </button>
-      </div>
-    </div>
     
     <!-- Popup untuk Pesan Poin Tidak Cukup -->
 <div id="popupPoinTidakCukup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

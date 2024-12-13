@@ -374,25 +374,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
                                   <?php while ($reward = $resultRewards->fetch_assoc()): ?>
                                       <div class="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col h-full">
                                           <div class="relative flex-shrink-0">
-                                          <img src="<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">
+                                          <img src="../../admin/kelola-reward/<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">
                                               <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
                                                   <p class="font-bold"><?= htmlspecialchars($reward['reward_name']); ?></p>
                                               </div>
                                               <div class="p-4">
-                          <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>
-                          <div class="flex justify-between items-center">
-                              <p class="text-green-900 font-bold"><?= $reward['reward_points_required']; ?> Poin</p>
-                              <button 
-                                  class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-full hover:bg-green-700"
-                                  onclick="togglePopup(<?= $reward['reward_id']; ?>, <?= $reward['reward_points_required']; ?>)">
-                                  Tukar
-                              </button>
+                                          <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>
+                                      <div class="flex justify-between items-center">
+                                <p class="text-green-900 font-bold"><?= $reward['reward_points_required']; ?> Poin</p>
+                                <button 
+                                    class="bg-gradient-to-r from-green to-dark-green text-white px-4 py-2 rounded-full hover:bg-green-700"
+                                    onclick="togglePopup(<?= $reward['reward_id']; ?>, <?= $reward['reward_points_required']; ?>)">
+                                    Tukar
+                                </button>
                           </div>
                       </div>
 
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endwhile; ?>  
         </div>
 
     <!-- Popup Konfirmasi -->

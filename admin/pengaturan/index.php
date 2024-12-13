@@ -54,48 +54,64 @@ $bankResult = $conn->query($bankQuery);
 
 if ($bankResult->num_rows > 0) {
     $bankData = $bankResult->fetch_assoc();
-    $operatingHours = $bankData['bank_operating_hours'];
-} else {
-    $jamOperasional = "";
+    $jamOperasional = $bankData['bank_operating_hours'];
 }
 
 // Perbarui data saat form dikirim
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Tangkap data dari form
-    $plastikPoint = $_POST['poin-plastik'];
-    $kertasPoint = $_POST['poin-kertas'];
-    $logamPoint = $_POST['poin-logam'];
-    $jamOperasional = $_POST['jam-operasional']; // Ambil nilai jam operasional dari form
+    $plastikPoint = isset($_POST['poin-plastik']) && $_POST['poin-plastik'] !== "" ? $_POST['poin-plastik'] : null;
+    $kertasPoint = isset($_POST['poin-kertas']) && $_POST['poin-kertas'] !== "" ? $_POST['poin-kertas'] : null;
+    $logamPoint = isset($_POST['poin-logam']) && $_POST['poin-logam'] !== "" ? $_POST['poin-logam'] : null;
+    $jamOperasional = isset($_POST['jam-operasional']) ? $_POST['jam-operasional'] : null;
 
     // Mulai transaksi untuk update data
     $conn->begin_transaction();
 
     try {
-        // Update poin sampah
-        $updateQuery = "
-            UPDATE waste 
-            SET waste_point = CASE waste_name
-                WHEN 'Plastik' THEN $plastikPoint
-                WHEN 'Kertas' THEN $kertasPoint
-                WHEN 'Logam' THEN $logamPoint
-            END
-            WHERE waste_name IN ('Plastik', 'Kertas', 'Logam')";
-        
-        if (!$conn->query($updateQuery)) {
-            throw new Exception("Error updating waste points: " . $conn->error);
+        // Update poin sampah jika ada data terkait
+        if ($plastikPoint !== null || $kertasPoint !== null || $logamPoint !== null) {
+            $updateQuery = "UPDATE waste SET waste_point = CASE ";
+            $conditions = [];
+
+            if ($plastikPoint !== null) {
+                $updateQuery .= "WHEN waste_name = 'Plastik' THEN ? ";
+                $conditions[] = $plastikPoint;
+            }
+            if ($kertasPoint !== null) {
+                $updateQuery .= "WHEN waste_name = 'Kertas' THEN ? ";
+                $conditions[] = $kertasPoint;
+            }
+            if ($logamPoint !== null) {
+                $updateQuery .= "WHEN waste_name = 'Logam' THEN ? ";
+                $conditions[] = $logamPoint;
+            }
+
+            $updateQuery .= "END WHERE waste_name IN (";
+            if ($plastikPoint !== null) $updateQuery .= "'Plastik', ";
+            if ($kertasPoint !== null) $updateQuery .= "'Kertas', ";
+            if ($logamPoint !== null) $updateQuery .= "'Logam', ";
+            $updateQuery = rtrim($updateQuery, ", ") . ")";
+
+            $stmt = $conn->prepare($updateQuery);
+            $stmt->bind_param(str_repeat("i", count($conditions)), ...$conditions);
+            if (!$stmt->execute()) {
+                throw new Exception("Error updating waste points: " . $stmt->error);
+            }
         }
 
-        // Validasi format jam operasional (contoh format: "08:00 - 17:00")
-        if (!preg_match("/^([01]?[0-9]|2[0-3]):([0-5][0-9]) - ([01]?[0-9]|2[0-3]):([0-5][0-9])$/", $jamOperasional)) {
-            throw new Exception("Format jam operasional tidak sesuai. Format yang benar: HH:MM - HH:MM");
-        }
+        // Validasi format jam operasional jika diisi
+        if ($jamOperasional !== null) {
+            if (!preg_match("/^([01]?[0-9]|2[0-3]):([0-5][0-9]) - ([01]?[0-9]|2[0-3]):([0-5][0-9])$/", $jamOperasional)) {
+                throw new Exception("Format jam operasional tidak sesuai. Format yang benar: HH:MM - HH:MM");
+            }
 
-        // Update jam operasional ke database jika valid
-        $stmt = $conn->prepare("UPDATE bank_locations SET bank_operating_hours = ? WHERE bank_id = ?");
-        $stmt->bind_param("si", $jamOperasional, $bankId);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Error updating operating hours: " . $stmt->error);
+            // Update jam operasional ke database jika valid
+            $stmt = $conn->prepare("UPDATE bank_locations SET bank_operating_hours = ? WHERE bank_id = ?");
+            $stmt->bind_param("si", $jamOperasional, $bankId);
+            if (!$stmt->execute()) {
+                throw new Exception("Error updating operating hours: " . $stmt->error);
+            }
         }
 
         // Commit transaksi jika tidak ada error

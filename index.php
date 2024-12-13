@@ -9,7 +9,7 @@
 <body>
   <!-- NAVBAR -->
   <nav class="relative px-4 md:px-9 h-12 md:h-16 flex justify-between lg:justify-normal xl:justify-center items-center bg-light">
-		<a class="flex justify-start xl:justify-normal" href="./">
+		<a class="flex justify-start xl:justify-normal" href="./landing-page.php">
 			<img src="./images/logo-crop.png" class="h-4 md:h-5" alt="Logo Lestari">
 		</a>
 		<div class="lg:hidden">

@@ -375,7 +375,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem'])) {
                                       <div class="bg-white shadow-md rounded-lg overflow-hidden w-80 flex flex-col h-full">
                                           <div class="relative flex-shrink-0">
                                           <img src="../../admin/kelola-reward/<?= htmlspecialchars($reward['reward_image']); ?>" alt="<?= htmlspecialchars($reward['reward_name']); ?>" class="w-full h-40 object-cover">                                              <div class="absolute top-0 left-0 bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-br-lg">
-                                                  <p class="font-bold"><?= htmlspecialchars($reward['reward_name']); ?></p>
                                               </div>
                                               <div class="p-4">
                           <h3 class="text-gray-800 font-semibold text-lg text-center">Tukarkan poin dengan <?= htmlspecialchars($reward['reward_name']); ?></h3>

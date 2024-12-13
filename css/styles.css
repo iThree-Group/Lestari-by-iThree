@@ -6857,6 +6857,10 @@ details.collapse summary::-webkit-details-marker{
   width: 320px;
 }
 
+.artboard.\!phone{
+  width: 320px !important;
+}
+
 .artboard.phone-1{
   width: 320px;
   height: 568px;
@@ -8883,6 +8887,10 @@ html:has(.drawer-open.drawer-open){
   margin-left: 0.5rem;
 }
 
+.ml-4{
+  margin-left: 1rem;
+}
+
 .ml-8{
   margin-left: 2rem;
 }
@@ -9306,6 +9314,10 @@ html:has(.drawer-open.drawer-open){
   width: 50%;
 }
 
+.w-20{
+  width: 5rem;
+}
+
 .w-24{
   width: 6rem;
 }
@@ -9470,12 +9482,20 @@ html:has(.drawer-open.drawer-open){
   width: 700px;
 }
 
+.w-\[70px\]{
+  width: 70px;
+}
+
 .w-\[72px\]{
   width: 72px;
 }
 
 .w-\[77px\]{
   width: 77px;
+}
+
+.w-\[90px\]{
+  width: 90px;
 }
 
 .w-\[this-is\\\\\]{
@@ -10702,6 +10722,11 @@ html:has(.drawer-open.drawer-open){
   border-bottom-left-radius: 0.25rem;
 }
 
+.rounded-b-lg{
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
 .rounded-e{
   border-start-end-radius: 0.25rem;
   border-end-end-radius: 0.25rem;
@@ -10760,6 +10785,11 @@ html:has(.drawer-open.drawer-open){
 .rounded-t-\[100px\]{
   border-top-left-radius: 100px;
   border-top-right-radius: 100px;
+}
+
+.rounded-t-lg{
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
 }
 
 .rounded-bl{
@@ -12548,6 +12578,10 @@ html:has(.drawer-open.drawer-open){
 }
 
 @media (min-width: 640px){
+  .sm\:mb-0{
+    margin-bottom: 0px;
+  }
+
   .sm\:h-5{
     height: 1.25rem;
   }
@@ -12562,6 +12596,33 @@ html:has(.drawer-open.drawer-open){
 
   .sm\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row{
+    flex-direction: row;
+  }
+
+  .sm\:items-center{
+    align-items: center;
+  }
+
+  .sm\:p-6{
+    padding: 1.5rem;
+  }
+
+  .sm\:text-2xl{
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .sm\:text-base{
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .sm\:text-sm{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .sm\:text-xl{
@@ -12689,6 +12750,10 @@ html:has(.drawer-open.drawer-open){
 
   .md\:w-32{
     width: 8rem;
+  }
+
+  .md\:w-\[150px\]{
+    width: 150px;
   }
 
   .md\:w-\[363px\]{
@@ -13026,10 +13091,6 @@ html:has(.drawer-open.drawer-open){
 
   .lg\:h-full{
     height: 100%;
-  }
-
-  .lg\:w-\[100px\]{
-    width: 100px;
   }
 
   .lg\:w-\[450px\]{

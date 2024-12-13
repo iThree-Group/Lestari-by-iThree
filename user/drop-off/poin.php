@@ -188,111 +188,110 @@ while ($row = $result->fetch_assoc()) {
           <img src="../../images/Logo.png" alt="Logo Lestari">
         </a>
       </div>
-<!-- DESKTOP MODE -->
-<div class="navbar-center hidden lg:flex">
-  <ul class="menu menu-horizontal px-1 text-dark text-base">
-    <li><a href="../../landing-page.php">Home</a></li>
-    <li><a href="../../user/tentang.php">Tentang kami</a></li>
-    <li>
-      <details>
-        <summary>Layanan</summary>
-        <ul class="bg-light absolute left-1/2 transform -translate-x-1/2 rounded-[10px] border-[1px] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] border-gray px-[14px] py-[20px] flex flex-wrap items-center gap-3 min-w-[300px] max-w-[600px]">
-          <!-- Drop Off -->
-          <li>
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-              <button onclick="window.location.href='../../user/drop-off/dropoff.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/truck.png" class="w-8 h-8" alt="">
-                <p>Drop Off</p>
-              </button>
-            <?php else: ?>
-              <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/truck.png" class="w-8 h-8" alt="">
-                <p>Drop Off</p>
-              </button>
-            <?php endif; ?>
-          </li>
-          <!-- Rewards -->
-          <li>
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-              <button onclick="window.location.href='../../user/drop-off/poin.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/reward.png" class="w-8 h-8" alt="">
-                <p>Rewards</p>
-              </button>
-            <?php else: ?>
-              <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/reward.png" class="w-8 h-8" alt="">
-                <p>Rewards</p>
-              </button>
-            <?php endif; ?>
-          </li>
-          
-          <!-- Marketplace -->
-          <li>
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-              <button onclick="window.location.href='../../user/marketplace/marketplace.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/marketplace.png" class="w-8 h-8" alt="">
-                <p>Marketplace</p>
-              </button>
-            <?php else: ?>
-              <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
-                <img src="../../images/marketplace.png" class="w-8 h-8" alt="">
-                <p>Marketplace</p>
-              </button>
-            <?php endif; ?>
-          </li>
-        </ul>
-      </details>
-    </li>
-    <li><a href="../../user/blog.php">Blog</a></li>
-    <li><a href="../../user/kontak-kami.php">Kontak Kami</a></li>
-  </ul>
-</div>
+  <!-- DESKTOP MODE -->
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 text-dark text-base">
+      <li><a href="../../landing-page.php">Home</a></li>
+      <li><a href="../../user/tentang.php">Tentang kami</a></li>
+      <li>
+        <details>
+          <summary>Layanan</summary>
+          <ul class="bg-light absolute left-1/2 transform -translate-x-1/2 rounded-[10px] border-[1px] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] border-gray px-[14px] py-[20px] flex flex-wrap items-center gap-3 min-w-[300px] max-w-[600px]">
+            <!-- Drop Off -->
+            <li>
+              <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <button onclick="window.location.href='../../user/drop-off/dropoff.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/truck.png" class="w-8 h-8" alt="">
+                  <p>Drop Off</p>
+                </button>
+              <?php else: ?>
+                <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/truck.png" class="w-8 h-8" alt="">
+                  <p>Drop Off</p>
+                </button>
+              <?php endif; ?>
+            </li>
+            <!-- Rewards -->
+            <li>
+              <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <button onclick="window.location.href='../../user/drop-off/poin.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/reward.png" class="w-8 h-8" alt="">
+                  <p>Rewards</p>
+                </button>
+              <?php else: ?>
+                <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/reward.png" class="w-8 h-8" alt="">
+                  <p>Rewards</p>
+                </button>
+              <?php endif; ?>
+            </li>
+            
+            <!-- Marketplace -->
+            <li>
+              <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <button onclick="window.location.href='../../user/marketplace/marketplace.php'" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/marketplace.png" class="w-8 h-8" alt="">
+                  <p>Marketplace</p>
+                </button>
+              <?php else: ?>
+                <button onclick="showModal()" class="btn btn-success flex-grow shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[20px] flex items-center justify-center px-4 py-2 gap-2 min-w-[120px] max-w-[200px]">
+                  <img src="../../images/marketplace.png" class="w-8 h-8" alt="">
+                  <p>Marketplace</p>
+                </button>
+              <?php endif; ?>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li><a href="../../user/blog.php">Blog</a></li>
+      <li><a href="../../user/kontak-kami.php">Kontak Kami</a></li>
+    </ul>
+  </div>
 
+  <!-- Profile -->
+  <div class="navbar-end ml-[5px] flex items-center gap-x-0 md:gap-4">
+      <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+          <!-- Dropdown User -->
+          <div class="relative">
+              <button class="font-medium text-sm text-[#1B5E20] focus:outline-none" onclick="toggleDropdown()">
+                  Halo, <?= htmlspecialchars($_SESSION['user_name']); ?> 
+                  <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+              </button>
+              <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md z-10">
+                  <a href="../../user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                  <a href="../../backend/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+              </div>
+          </div>
+      <?php else: ?>
+        <!-- Tombol Sign In dan Sign Up jika belum login -->
+          <a href="../../user/signin.php" class="btn md:min-w-[100px] md:h-12 md:shadow-md md:rounded-full md:bg-gradient-to-r from-green to-dark-green md:text-sm md:border md:border-to-r md:from-green md:to-dark-green md:font-medium md:text-white md:text-center text-base bg-transparent text-sm text-[#1B5E20] border-0 shadow-none">
+            Sign In
+          </a>
+          <a href="../../user/signup.php" class="btn btn-outline md:min-w-[100px] md:h-12 md:shadow-md md:border border-to-r from-green to-dark-green md:rounded-full md:text-sm md:font-medium md:text-[#1B5E20] md:text-center text-base bg-transparent text-sm text-[#1B5E20] border-0 shadow-none whitespace-nowrap">
+            Sign Up
+          </a>
+      <?php endif; ?>
+  </div>
 
-<!-- Profile -->
-<div class="navbar-end ml-[5px] flex items-center gap-x-0 md:gap-4">
-    <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-        <!-- Dropdown User -->
-        <div class="relative">
-            <button class="font-medium text-sm text-[#1B5E20] focus:outline-none" onclick="toggleDropdown()">
-                Halo, <?= htmlspecialchars($_SESSION['user_name']); ?> 
-                <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md z-10">
-                <a href="../../user/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
-                <a href="../../backend/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
-            </div>
-        </div>
-    <?php else: ?>
-      <!-- Tombol Sign In dan Sign Up jika belum login -->
-        <a href="../../user/signin.php" class="btn md:min-w-[100px] md:h-12 md:shadow-md md:rounded-full md:bg-gradient-to-r from-green to-dark-green md:text-sm md:border md:border-to-r md:from-green md:to-dark-green md:font-medium md:text-white md:text-center text-base bg-transparent text-sm text-[#1B5E20] border-0 shadow-none">
-          Sign In
-        </a>
-        <a href="../../user/signup.php" class="btn btn-outline md:min-w-[100px] md:h-12 md:shadow-md md:border border-to-r from-green to-dark-green md:rounded-full md:text-sm md:font-medium md:text-[#1B5E20] md:text-center text-base bg-transparent text-sm text-[#1B5E20] border-0 shadow-none whitespace-nowrap">
-          Sign Up
-        </a>
-    <?php endif; ?>
-</div>
+  <script>
+      // Toggle dropdown visibility
+      function toggleDropdown() {
+          const dropdown = document.getElementById('dropdownMenu');
+          dropdown.classList.toggle('hidden');
+      }
 
-<script>
-    // Toggle dropdown visibility
-    function toggleDropdown() {
-        const dropdown = document.getElementById('dropdownMenu');
-        dropdown.classList.toggle('hidden');
-    }
-
-    // Close dropdown if clicked outside
-    window.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdownMenu');
-        const button = event.target.closest('button');
-        // Jika yang diklik bukan tombol atau dropdown, sembunyikan dropdown
-        if (!button || button.getAttribute('onclick') !== 'toggleDropdown()') {
-            dropdown.classList.add('hidden');
-        }
-    });
-</script>
+      // Close dropdown if clicked outside
+      window.addEventListener('click', function(event) {
+          const dropdown = document.getElementById('dropdownMenu');
+          const button = event.target.closest('button');
+          // Jika yang diklik bukan tombol atau dropdown, sembunyikan dropdown
+          if (!button || button.getAttribute('onclick') !== 'toggleDropdown()') {
+              dropdown.classList.add('hidden');
+          }
+      });
+  </script>
     </div>
     <!-- navbar -->
     <script>
@@ -306,7 +305,7 @@ while ($row = $result->fetch_assoc()) {
   <!-- NAVBAR END -->
 
 
- <!-- section -->
+
 <!-- section -->
 <section class="bg-gray-100 w-full min-h-screen">
   <main class="container mx-auto md:px-16 px-6 py-6">
@@ -322,31 +321,36 @@ while ($row = $result->fetch_assoc()) {
       </a>
     </div>
 
-    <!-- Riwayat Drop Off dan Redeem -->
-    <div class="bg-white rounded-lg shadow-lg p-6">
-  <h1 class="text-2xl font-bold text-green-700 text-center mb-4">Riwayat Drop Off dan Redeem</h1>
-  <div class="space-y-4">
-    <?php
-    // Loop through each row of results and display it in the HTML
-    foreach ($rows as $row) {
-    ?>
-      <div class="flex justify-between items-center bg-gray-100 rounded-lg p-4 shadow">
-        <div class="flex items-center space-x-4">
-          <!-- Ikon sesuai tipe -->
-          <div class="w-12 h-12 <?= $row['type'] === 'Redeem' ? 'bg-red-600' : 'bg-[#1B5E20]' ?> rounded-full flex items-center justify-center mb-3">
-            <img src="../../images/user/<?= $row['type'] === 'Redeem' ? 'redeem.png' : 'recycle.png' ?>" class="w-7" alt="<?= $row['type'] ?> Icon">
-          </div>
-          <div>
-            <h2 class="font-bold <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-[#1B5E20]' ?>"><?= $row['type'] === 'Redeem' ? 'Reward Redeem' : 'Reward Drop Off' ?></h2>
-            <p class="text-sm text-gray-500"><?= date('d M Y, H:i', strtotime($row['created_at'])); ?></p>
-          </div>
-        </div>
-        <span class="text-xl font-bold <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-green-700' ?>"><?= number_format($row['points']); ?> Poin</span>
+    <!-- Container Utama -->
+    <div class="flex flex-col h-screen bg-gray-100">
+      <!-- Bagian Header atau Judul -->
+      <div class="bg-white rounded-t-lg shadow-lg p-4 sm:p-6">
+        <h1 class="text-xl sm:text-2xl font-bold text-green-700 text-center mb-4">Riwayat Drop Off dan Redeem</h1>
       </div>
-    <?php } ?>
-  </div>
-</div>
 
-    
+      <!-- Bagian Riwayat (Mengisi Sisa Ruang) -->
+      <div class="flex-1 bg-white rounded-b-lg shadow-lg overflow-y-auto p-4 sm:p-6 space-y-4">
+        <?php
+        // Loop through each row of results and display it in the HTML
+        foreach ($rows as $row) {
+        ?>
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-100 rounded-lg p-4 shadow">
+            <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+              <!-- Ikon sesuai tipe -->
+              <div class="w-12 h-12 <?= $row['type'] === 'Redeem' ? 'bg-red-600' : 'bg-[#1B5E20]' ?> rounded-full flex items-center justify-center">
+                <img src="../../images/user/<?= $row['type'] === 'Redeem' ? 'redeem.png' : 'recycle.png' ?>" class="w-7" alt="<?= $row['type'] ?> Icon">
+              </div>
+              <div>
+                <h2 class="font-bold text-sm sm:text-base <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-[#1B5E20]' ?>"><?= $row['type'] === 'Redeem' ? 'Reward Redeem' : 'Reward Drop Off' ?></h2>
+                <p class="text-xs sm:text-sm text-gray-500"><?= date('d M Y, H:i', strtotime($row['created_at'])); ?></p>
+              </div>
+            </div>
+            <span class="text-base sm:text-xl font-bold <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-green-700' ?>"><?= number_format($row['points']); ?> Poin</span>
+          </div>
+        <?php } ?>
+      </div>
+    </div>
+  </div>
+
   </main>
 </section>

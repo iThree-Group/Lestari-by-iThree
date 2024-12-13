@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validasi tipe file
     $allowed_types = array("jpg", "jpeg", "png", "gif");
     if (!in_array($image_file_type, $allowed_types)) {
-        echo "<script>alert('Format file gambar tidak valid. Hanya JPG, JPEG, PNG, dan GIF diperbolehkan.');</script>";
+        echo "<script>alert('Format file gambar tidak valid. Hanya JPG, JPEG, PNG, dan GIF diperbolehkan.');
+        window.location.href = '../user/marketplace/upload.php';</script>";
         exit;
     }
     
@@ -46,13 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Batas ukuran file (contoh: 2MB)
     $max_file_size = 2 * 1024 * 1024; // 2MB
     if ($_FILES["marketplace_image"]["size"] > $max_file_size) {
-        echo "<script>alert('Ukuran file terlalu besar. Maksimal 2MB.');</script>";
+        echo "<script>alert('Ukuran file terlalu besar. Maksimal 2MB.');
+        window.location.href = '../user/marketplace/upload.php';</script>";
         exit;
     }
 
     // Proses upload file
     if (!move_uploaded_file($_FILES["marketplace_image"]["tmp_name"], $target_file)) {
-        echo "<script>alert('Gagal mengupload file. Periksa izin folder.');</script>";
+        echo "<script>alert('Gagal mengupload file. Periksa izin folder.');
+        window.location.href = '../user/marketplace/upload.php';</script>";
         exit;
     }
 

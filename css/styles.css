@@ -6857,6 +6857,10 @@ details.collapse summary::-webkit-details-marker{
   width: 320px;
 }
 
+.artboard.\!phone{
+  width: 320px !important;
+}
+
 .artboard.phone-1{
   width: 320px;
   height: 568px;

@@ -32,21 +32,16 @@ if ($stmt) {
     $total_sampah = 0; // Default jika query gagal
 }
 
-// Query untuk menghitung jumlah bank sampah
-$query = "
-    SELECT COUNT(bank_id) AS total_banks
-    FROM bank_locations;
-";
-
-$result = $conn->query($query);
-
-// Periksa apakah query berhasil
-if ($result && $result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $total_banks = $row['total_banks'] ?? 0;
-} else {
-    $total_banks = 0; // Default jika query gagal
-}
+// Query untuk menghitung jumlah user terdaftar
+$query_total_users = "
+    SELECT COUNT(user_id) AS total_users
+    FROM users";
+$stmt = $conn->prepare($query_total_users);
+$stmt->execute();
+$stmt->bind_result($total_users);
+$stmt->fetch();
+$total_users = $total_users ?? 0;
+$stmt->close();
 
 // Menutup koneksi setelah selesai
 $conn->close();
@@ -354,18 +349,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-lg shadow-md flex justify-between items-center">
     <!-- Kolom 1 -->
     <div class="flex flex-col items-center text-center">
-        <h5 class="font-bold md:text-xl text-l">
-            <?php echo number_format($total_sampah, 0, ',', '.') . " Kg"; ?>
-        </h5>
-        <p class="text-sm">Sampah di Daur Ulang</p>
-    </div>
+               <h5 class="font-bold md:text-xl text-l">
+                  <?php echo number_format($total_sampah, 0, ',', '.') . " Kg"; ?>
+              </h5>
+              <p class="text-sm">Sampah di Daur Ulang</p>
+          </div>
+
     <!-- Kolom 2 -->
     <div class="flex flex-col items-center text-center">
-        <h5 class="font-bold md:text-xl text-l">
-            <?php echo number_format($total_banks, 0, ',', '.'); ?>
-        </h5>
-        <p class="text-sm">Mitra Bank Sampah</p>
-    </div>
+    <h5 class="font-bold md:text-xl text-l">
+                  <?php echo number_format($total_users, 0, ',', '.'); ?>
+              </h5>
+              <p class="text-sm">Pengguna</p>
+          </div>
 </div>
 
         </div>

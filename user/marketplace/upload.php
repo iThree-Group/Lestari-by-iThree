@@ -269,8 +269,8 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             type="text"
             name="marketplace_product_name"
             id="product-name"
-            class="w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            placeholder="Bunga Hias Mawar Plastik"
+            class="w-full h-10 mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+            placeholder="Maukkan Nama Produk"
             required
           />
         </div>
@@ -282,8 +282,8 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             type="number"
             name="marketplace_price"
             id="product-price"
-            class="w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            placeholder="15000"
+            class="w-full h-10 mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+            placeholder="Masukkan Harga Produk"
             required
           />
         </div>
@@ -296,7 +296,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             id="product-description"
             rows="4"
             class="w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            placeholder="Deskripsi produk..."
+            placeholder="Masukkan Deskripsi Produk"
             required
           ></textarea>
         </div>
@@ -308,8 +308,8 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             type="number" 
             name="marketplace_stock" 
             id="product-stock" 
-            class="block w-full mt-2 border-gray-300 rounded-md shadow-sm focus:ring-[#1B5E20] focus:border-[#1B5E20]" 
-            placeholder="Masukkan jumlah stock" 
+            class="block w-full h-10 mt-2 border-gray-300 rounded-md shadow-sm focus:ring-[#1B5E20] focus:border-[#1B5E20]" 
+            placeholder="Masukkan Jumlah Stock" 
             required
           >
         </div>

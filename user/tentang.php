@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -9,6 +10,44 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
 }
 // Logika untuk halaman aktif
 $current_page = basename($_SERVER['PHP_SELF']);
+
+include '../controller/config.php'; // Jika berada satu folder di atas
+// Query untuk menghitung total berat sampah
+$query_total_sampah = "
+    SELECT SUM(dr.waste_weight) AS total_berat 
+    FROM detail_request dr
+    JOIN drop_off_request dor ON dr.request_id = dor.request_id
+    AND dor.status = 'accepted'";
+$stmt = $conn->prepare($query_total_sampah);
+
+if ($stmt) {
+    $stmt->execute();
+    $stmt->bind_result($total_sampah);
+    $stmt->fetch();
+    $total_sampah = $total_sampah ?? 0; // Jika null, jadikan 0
+    $stmt->close();
+} else {
+    $total_sampah = 0; // Default jika query gagal
+}
+
+// Query untuk menghitung jumlah bank sampah
+$query = "
+    SELECT COUNT(bank_id) AS total_banks
+    FROM bank_locations;
+";
+
+$result = $conn->query($query);
+
+// Periksa apakah query berhasil
+if ($result && $result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $total_banks = $row['total_banks'] ?? 0;
+} else {
+    $total_banks = 0; // Default jika query gagal
+}
+
+// Menutup koneksi setelah selesai
+$conn->close();
 
 ?>
 <!DOCTYPE html>
@@ -342,12 +381,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="mb-6">
     <div class="bg-[#E8F5E9] text-white md:p-10 p-6 rounded-lg shadow-md flex justify-between">
       <div class="md:text-center text-left">
-        <h5 class="text-[#1B5E20] font-bold md:text-2xl text-xl">2jt Kg+</h5>
+        <h5 class="text-[#1B5E20] font-bold md:text-2xl text-xl">
+          <?php echo number_format($total_sampah, 0, ',', '.') . " Kg"; ?>
+        </h5>
           <p class="text-black md:text-l text-xs">Sampah di Daur Ulang</p>
             </div>
 
               <div class="md:text-center text-right">
-                <h5 class="text-[#1B5E20] font-bold md:text-2xl text-xl ">500+</h5>
+                <h5 class="text-[#1B5E20] font-bold md:text-2xl text-xl ">
+                  <?php echo number_format($total_banks, 0, ',', '.'); ?>
+                </h5>
                   <p class="text-black md:text-l text-xs">Mitra Bank Sampah</p>
               </div>
             </div>

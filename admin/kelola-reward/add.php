@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
                 </div>
             <!-- HEADER END -->
             
-            <!-- ADD TUTORIAL -->
+            <!-- ADD -->
             <section class="bg-light p-6 mt-7 rounded-[10px] w-full shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)]">
                 <div class="flex flex-row">
                     <a href="./" class="self-center">

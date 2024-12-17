@@ -19,37 +19,42 @@ if ($marketplace_id <= 0) {
   die("Marketplace ID tidak valid. Pastikan URL memiliki parameter id yang benar.");
 }
 
-// Query untuk mengambil data produk berdasarkan user_id dan marketplace_id
-$sql = "SELECT * FROM marketplace WHERE user_id = ? AND marketplace_id = ?";
+// Query untuk mengambil data produk berdasarkan marketplace_id saja
+$sql = "SELECT * FROM marketplace WHERE marketplace_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ii", $user_id, $marketplace_id); // Bind parameter untuk user_id dan marketplace_id
+$stmt->bind_param("i", $marketplace_id); // Bind parameter untuk marketplace_id
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Mengecek apakah ada produk
 if ($result->num_rows > 0) {
-    // Ambil produk pertama
+    // Ambil data produk pertama
     $row = $result->fetch_assoc();
 } else {
-    // Jika tidak ada produk, set $row ke array kosong
+    // Jika tidak ada produk, set $row ke null
     $row = null;
 }
-// Query to get the user's phone number from the user table
-$sql_user = "SELECT user_phone_number FROM users WHERE user_id = ?";
-$stmt_user = $conn->prepare($sql_user);
-$stmt_user->bind_param("i", $user_id);  // Bind user_id
-$stmt_user->execute();
-$result_user = $stmt_user->get_result();
 
-// Fetch the phone number
-if ($result_user->num_rows > 0) {
-    $user_data = $result_user->fetch_assoc();
-    $phone_number = $user_data['user_phone_number'];
+// Query untuk mengambil nomor telepon pemilik produk berdasarkan marketplace_id
+$sql_phone = "
+    SELECT u.user_phone_number 
+    FROM users u
+    JOIN marketplace m ON u.user_id = m.user_id
+    WHERE m.marketplace_id = ?";
+$stmt_phone = $conn->prepare($sql_phone);
+$stmt_phone->bind_param("i", $marketplace_id); // Bind marketplace_id
+$stmt_phone->execute();
+$result_phone = $stmt_phone->get_result();
+
+// Ambil nomor telepon
+if ($result_phone->num_rows > 0) {
+    $data_phone = $result_phone->fetch_assoc();
+    $phone_number = $data_phone['user_phone_number'];
 } else {
-    $phone_number = null;
+    $phone_number = 'Tidak tersedia';
 }
 
-$stmt_user->close();
+$stmt_phone->close();
 $conn->close();
 ?>
 

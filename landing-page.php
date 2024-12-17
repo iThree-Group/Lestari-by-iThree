@@ -228,7 +228,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
 
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-green to-dark-green text-white h-auto">
-  <div class="container mx-auto md:px-0 md:pl-12 md:gap-5 flex flex-col md:flex-row items-center md:justify-between h-full">
+  <div class="container md:max-w-full mx-auto md:mx-0 md:px-0 md:pl-12 md:gap-5 flex flex-col md:flex-row items-center md:justify-between h-full">
     <div class="w-full md:w-1/2 text-center py-10 md:py-0 h-full flex flex-col justify-center items-center md:items-start md:text-left">
       <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl max-w-80 md:max-w-[610px] lg:max-w-[500px] xl:max-w-[600px] md:text-left font-bold leading-tight md:leading-normal lg:leading-relaxed xl:leading-relaxed mb-4">
         Tukarkan Sampah, Dapatkan Hadiahnya
@@ -237,7 +237,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
         #TukarSampahUntukKebaikan
       </p>
     </div>
-    <div class="md:w-1/2 md:right-0 md:top-[80px] flex flex-end">
+    <div class="md:w-1/2 md:right-0 md:top-[80px] flex">
       <!-- gambar mobile -->
       <img 
         src="./images/hero-banner-mobile.png" 
@@ -247,7 +247,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
       <img 
         src="./images/hero-banner.png" 
         alt="Hero Image Desktop" 
-        class="rounded-lg max-w-full h-auto object-cover hidden md:block">
+        class="rounded-lg max-w-full h-auto object-cover hidden md:block 2xl:ml-auto">
     </div>
   </div>
 </section>

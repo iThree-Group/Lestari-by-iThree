@@ -1,14 +1,56 @@
 <?php
+
 session_start();  // Start session untuk memeriksa status login
+
+// Koneksi ke database
+include 'controller/config.php';  // Pastikan file config.php berisi koneksi database
 
 // Halaman yang tidak memerlukan login (seperti landing-page.php)
 if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
-    // Jika user belum login, arahkan ke halaman login atau lainnya
+    // Jika user belum login, arahkan ke halaman login
     if (!isset($_SESSION['loggedin'])) {
         header("Location: landing-page.php");
-        exit();  // Jangan lupa exit setelah redirect
+        exit();
     }
 }
+
+// Query untuk menghitung total berat sampah
+$query_total_sampah = "
+    SELECT SUM(dr.waste_weight) AS total_berat 
+    FROM detail_request dr
+    JOIN drop_off_request dor ON dr.request_id = dor.request_id
+    AND dor.status = 'accepted'";
+$stmt = $conn->prepare($query_total_sampah);
+
+if ($stmt) {
+    $stmt->execute();
+    $stmt->bind_result($total_sampah);
+    $stmt->fetch();
+    $total_sampah = $total_sampah ?? 0; // Jika null, jadikan 0
+    $stmt->close();
+} else {
+    $total_sampah = 0; // Default jika query gagal
+}
+
+// Query untuk menghitung jumlah bank sampah
+$query = "
+    SELECT COUNT(bank_id) AS total_banks
+    FROM bank_locations;
+";
+
+$result = $conn->query($query);
+
+// Periksa apakah query berhasil
+if ($result && $result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $total_banks = $row['total_banks'] ?? 0;
+} else {
+    $total_banks = 0; // Default jika query gagal
+}
+
+// Menutup koneksi setelah selesai
+$conn->close();
+
 // Logika untuk halaman aktif
 $current_page = basename($_SERVER['PHP_SELF']);
 
@@ -309,16 +351,23 @@ $current_page = basename($_SERVER['PHP_SELF']);
           LESTARI mengajak kamu untuk melakukan Drop Off sampah di bank sampah terdekat dan mendapatkan hadiah menarik. Pilah sampahmu (plastik, kertas, logam, atau organik), bawa ke bank sampah, kumpulkan poin, dan tukarkan dengan hadiah ramah lingkungan. Dengan Drop Off, kamu ikut berkontribusi menjaga bumi, mengurangi sampah di lingkungan, serta mendukung upaya daur ulang. Ayo, manfaatkan fitur ini dan jadikan bumi lebih bersih dan hijau!
         </p>
         <div class="md:mb-6 mb-2">
-          <div class="bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-lg shadow-md flex justify-between">
-            <div class="text-center text-l">
-              <h5 class="font-bold md:text-xl text-l">2jt Kg+</h5>
-              <p class="text-sm">Sampah di Daur Ulang</p>
-            </div>
-            <div class="text-center">
-              <h5 class="font-bold md:text-xl text-l">15rb+</h5>
-              <p class="text-sm">Pengguna</p>
-            </div>
-          </div>
+        <div class="bg-gradient-to-r from-green to-dark-green text-white p-4 rounded-lg shadow-md flex justify-between items-center">
+    <!-- Kolom 1 -->
+    <div class="flex flex-col items-center text-center">
+        <h5 class="font-bold md:text-xl text-l">
+            <?php echo number_format($total_sampah, 0, ',', '.') . " Kg"; ?>
+        </h5>
+        <p class="text-sm">Sampah di Daur Ulang</p>
+    </div>
+    <!-- Kolom 2 -->
+    <div class="flex flex-col items-center text-center">
+        <h5 class="font-bold md:text-xl text-l">
+            <?php echo number_format($total_banks, 0, ',', '.'); ?>
+        </h5>
+        <p class="text-sm">Mitra Bank Sampah</p>
+    </div>
+</div>
+
         </div>
         <div class="block">
           <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>

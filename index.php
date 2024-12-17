@@ -23,7 +23,7 @@
 		<div class="hidden lg:flex ml-auto xl:ml-64 justify-end xl:justify-normal gap-8">
         <ul class="menu menu-horizontal px-1 text-dark text-base gap-2">
             <li><a>Home</a></li>
-            <li><a>Tentang kami</a></li>
+            <li><a>Tentang Kami</a></li>
             <li>
               <details>
                 <summary>Layanan</summary>
@@ -86,7 +86,7 @@
 						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">Home</a>
 					</li>
           <li class="mb-1">
-						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">Tentang kami</a>
+						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">Tentang Kami</a>
 					</li>
           <li>
             <details open>

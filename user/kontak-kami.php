@@ -62,7 +62,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             id="dropdown-menu"
             class="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow hidden">
             <li><a href="../landing-page.php">Home</a></li>
-            <li><a href="../user/tentang.php">Tentang kami</a></li>
+            <li><a href="../user/tentang.php">Tentang Kami</a></li>
             <li>
               <a>Layanan</a>
               <ul class="p-2">

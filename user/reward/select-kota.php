@@ -1,26 +1,15 @@
 <?php
-session_start();  // Start session untuk memeriksa status login
+session_start();  // Pastikan session sudah dimulai
 
-// Halaman yang tidak memerlukan login (seperti landing-page.php)
-if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
-    // Jika user belum login, arahkan ke halaman login atau lainnya
-    if (!isset($_SESSION['loggedin'])) {
-        header("Location: ../../landing-page.php");
-        exit();  // Jangan lupa exit setelah redirect
-    }
+// Koneksi ke database
+include '../../controller/config.php';  // Sesuaikan dengan path file database.php
+
+// Cek apakah pengguna sudah login
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: ../../landing-page.php");
+    exit();
 }
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "db_sampah_4"; // Ganti dengan nama database Anda
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Periksa jika ada parameter bank_name di URL
 $bank_name = isset($_GET['bank_name']) ? $_GET['bank_name'] : '';

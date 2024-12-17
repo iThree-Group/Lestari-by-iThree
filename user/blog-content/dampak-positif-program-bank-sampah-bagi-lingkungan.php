@@ -274,12 +274,6 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
                 </div>
             </section>
             <p class="mb-4 text-gray-700">Program bank sampah bukan hanya solusi untuk masalah sampah, tetapi juga menjadi gerakan yang memberdayakan masyarakat untuk lebih peduli terhadap lingkungan. Dengan dukungan aktif dari semua pihak, program ini dapat terus berkembang dan memberikan manfaat yang lebih besar.</p>
-            <!-- Back Button -->
-            <div class="mt-6">
-                <a href="../../user/blog.php" class="bg-gradient-to-r from-green to-dark-green text-white px-6 py-2 rounded shadow hover:bg-green-800">
-                    Kembali
-                </a>
-            </div>
         </div>
     </main>
 

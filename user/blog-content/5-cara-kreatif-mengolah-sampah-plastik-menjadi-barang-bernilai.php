@@ -345,13 +345,6 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
                     </ol>
                 </div>
             </section>
-
-            <!-- Back Button -->
-            <div class="mt-6">
-                <a href="../../user/blog.php" class="bg-gradient-to-r from-green to-dark-green text-white px-6 py-2 rounded shadow hover:bg-green-800">
-                    Kembali
-                </a>
-            </div>
         </div>
     </main>
 

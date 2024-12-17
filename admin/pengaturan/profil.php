@@ -24,7 +24,23 @@ if ($result->num_rows > 0) {
     echo "<p>Admin tidak ditemukan.</p>";
     exit();
 }
+
+// Ambil data bank_location nama bank
+$bank_id = $_SESSION['bank_id'];
+$sql = "SELECT * FROM bank_locations WHERE bank_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $bank_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $bank_location = $result->fetch_assoc();
+} else {
+    echo "<p>Bank tidak ditemukan.</p>";
+    exit();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -118,7 +134,7 @@ if ($result->num_rows > 0) {
                             class="w-[150px] rounded-full"
                             src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                     <div class="flex flex-col justify-center text-dark">
-                        <h2 class="text-3xl font-semibold">Admin Lestari</h2>
+                        <h2 class="text-3xl font-semibold"><?= htmlspecialchars($bank_location['bank_name']); ?></h2>
                         <p class="text-xl font-semibold opacity-50">Administrator</p>
                         <div class="mt-1 flex flex-row gap-2 items-center">
                             <div class="bg-[#16EA1D] w-2.5 h-2.5 rounded-full"></div>

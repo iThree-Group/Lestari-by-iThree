@@ -9198,10 +9198,6 @@ html:has(.drawer-open.drawer-open){
   height: 2px;
 }
 
-.h-\[30px\]{
-  height: 30px;
-}
-
 .h-\[314px\]{
   height: 314px;
 }
@@ -9248,10 +9244,6 @@ html:has(.drawer-open.drawer-open){
 
 .h-screen{
   height: 100vh;
-}
-
-.h-\[100px\]{
-  height: 100px;
 }
 
 .max-h-\[800px\]{
@@ -10941,11 +10933,6 @@ html:has(.drawer-open.drawer-open){
   background-color: rgb(27 94 32 / var(--tw-bg-opacity, 1));
 }
 
-.bg-\[\#2980B9\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(41 128 185 / var(--tw-bg-opacity, 1));
-}
-
 .bg-\[\#299E63\]{
   --tw-bg-opacity: 1;
   background-color: rgb(41 158 99 / var(--tw-bg-opacity, 1));
@@ -11585,10 +11572,6 @@ html:has(.drawer-open.drawer-open){
   padding-left: 23px;
 }
 
-.pl-\[27px\]{
-  padding-left: 27px;
-}
-
 .pl-\[7px\]{
   padding-left: 7px;
 }
@@ -11647,6 +11630,14 @@ html:has(.drawer-open.drawer-open){
 
 .pt-\[7px\]{
   padding-top: 7px;
+}
+
+.pl-4{
+  padding-left: 1rem;
+}
+
+.pr-6{
+  padding-right: 1.5rem;
 }
 
 .text-left{
@@ -11988,10 +11979,6 @@ html:has(.drawer-open.drawer-open){
 
 .opacity-50{
   opacity: 0.5;
-}
-
-.opacity-75{
-  opacity: 0.75;
 }
 
 .bg-blend-normal{

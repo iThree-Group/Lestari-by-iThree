@@ -34,7 +34,7 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
 </head>
 <body class="font-poppins">
 <!-- NAVBAR -->
-<div class="navbar bg-light h-20 pr-10 justify-between sticky top-0 z-50">
+<div class="navbar bg-light h-20 px-4 md:px-10 justify-between sticky top-0 z-50">
    <!-- MOBILE SCREEN MODE -->
    <div class="navbar-start pl-1/2">
         <div class="dropdown">
@@ -84,7 +84,7 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
                     </button>
                     <?php endif; ?>
                 </li>
-               
+                
                 <!-- Marketplace -->
                 <li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
@@ -104,15 +104,33 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
           </ul>
         </div>
         <!-- BRAND LOGO -->
-        <a href="../../landing-page.php" class="">
-          <img src="../../images/Logo.png" alt="Logo Lestari">
+        <a href="../../landing-page.php" class="ml-1">
+          <img src="../../images/logo-crop.png" class="h-4 sm:h-5 md:h-6 lg:h-7" alt="Logo Lestari">
         </a>
       </div>
 <!-- DESKTOP MODE -->
 <div class="navbar-center hidden lg:flex">
   <ul class="menu menu-horizontal px-1 text-dark text-base">
-    <li><a href="../../landing-page.php">Home</a></li>
-    <li><a href="../../user/tentang.php">Tentang kami</a></li>
+  <li>
+    <a href="../../landing-page.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'landing-page.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'landing-page.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'landing-page.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'landing-page.php') ? '#1B5E20' : '' ?>;">
+        Home
+    </a>
+</li>
+    <li>
+    <a href="../../user/tentang.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'tentang.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'tentang.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'tentang.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'tentang.php') ? '#1B5E20' : '' ?>;">
+        Tentang Kami
+    </a>
+  </li>
     <li>
       <details>
         <summary>Layanan</summary>
@@ -145,7 +163,7 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
               </button>
             <?php endif; ?>
           </li>
-          
+         
           <!-- Marketplace -->
           <li>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
@@ -163,8 +181,24 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
         </ul>
       </details>
     </li>
-    <li><a href="../../user/blog.php">Blog</a></li>
-    <li><a href="../../user/kontak-kami.php">Kontak Kami</a></li>
+    <li> <a href="../../user/blog.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'blog.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'blog.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;">
+        Blog
+    </a>
+  </li>
+  <li> <a href="../../user/kontak-kami.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'kontak-kami.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'kontak-kami.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'kontak-kami.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;">
+        Kontak Kami
+    </a>
+  </li>
   </ul>
 </div>
 
@@ -195,7 +229,6 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
         </a>
     <?php endif; ?>
 </div>
-
 <script>
     // Toggle dropdown visibility
     function toggleDropdown() {
@@ -214,8 +247,8 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
     });
 </script>
     </div>
-    <!-- navbar -->
-    <script>
+  <!-- navbar -->
+  <script>
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -224,7 +257,6 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
         });
     </script>
   <!-- NAVBAR END -->
-
 <!-- Content -->
     <main class=" bg-light container mx-auto px-16 py-12">
         <p class="text-sm bg-green-100 text-[#1B5E20] font-medium inline-block px-3 py-1 rounded">Tips Daur Ulang</p>
@@ -313,13 +345,6 @@ if (!in_array(basename($_SERVER['PHP_SELF']), ['landing-page.php', 'tentang.php'
                     </ol>
                 </div>
             </section>
-
-            <!-- Back Button -->
-            <div class="mt-6">
-                <a href="../../user/blog.php" class="bg-gradient-to-r from-green to-dark-green text-white px-6 py-2 rounded shadow hover:bg-green-800">
-                    Kembali
-                </a>
-            </div>
         </div>
     </main>
 

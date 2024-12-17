@@ -114,7 +114,7 @@ while ($row = $result->fetch_assoc()) {
 </head>
 <body class="font-poppins">
 <!-- NAVBAR -->
-<div class="navbar bg-light h-20 pr-10 justify-between sticky top-0 z-50">
+<div class="navbar bg-light h-20 px-4 md:px-10 justify-between sticky top-0 z-50">
    <!-- MOBILE SCREEN MODE -->
    <div class="navbar-start pl-1/2">
         <div class="dropdown">
@@ -183,9 +183,9 @@ while ($row = $result->fetch_assoc()) {
             <li><a href="../../user/kontak-kami.php">Kontak Kami</a></li>
           </ul>
         </div>
-        <!-- BRAND LOGO -->
-        <a href="../../landing-page.php" class="">
-          <img src="../../images/Logo.png" alt="Logo Lestari">
+         <!-- BRAND LOGO -->
+         <a href="../../landing-page.php" class="ml-1">
+          <img src="../../images/logo-crop.png" class="h-4 sm:h-5 md:h-6 lg:h-7" alt="Logo Lestari">
         </a>
       </div>
   <!-- DESKTOP MODE -->

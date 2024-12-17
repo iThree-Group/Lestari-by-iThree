@@ -75,8 +75,8 @@ $drop_off = $result_drop_off->fetch_assoc();
     </script>
 </head>
 <body class="font-poppins">
- <!-- NAVBAR -->
-<div class="navbar bg-light h-20 pr-10 justify-between sticky top-0 z-50">
+<!-- NAVBAR -->
+<div class="navbar bg-light h-20 px-4 md:px-10 justify-between sticky top-0 z-50">
    <!-- MOBILE SCREEN MODE -->
    <div class="navbar-start pl-1/2">
         <div class="dropdown">
@@ -126,7 +126,7 @@ $drop_off = $result_drop_off->fetch_assoc();
                     </button>
                     <?php endif; ?>
                 </li>
-              
+                
                 <!-- Marketplace -->
                 <li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
@@ -146,8 +146,8 @@ $drop_off = $result_drop_off->fetch_assoc();
           </ul>
         </div>
         <!-- BRAND LOGO -->
-        <a href="../landing-page.php" class="">
-          <img src="../images/Logo.png" alt="Logo Lestari">
+        <a href="../landing-page.php" class="ml-1">
+          <img src="../images/logo-crop.png" class="h-4 sm:h-5 md:h-6 lg:h-7" alt="Logo Lestari">
         </a>
       </div>
 <!-- DESKTOP MODE -->

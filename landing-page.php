@@ -9,6 +9,9 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
         exit();  // Jangan lupa exit setelah redirect
     }
 }
+// Logika untuk halaman aktif
+$current_page = basename($_SERVER['PHP_SELF']);
+
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +93,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
                 <!-- Marketplace -->
                 <li>
                     <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                    <button onclick="window.location.href='../user/marketplace/marketplace.php'">
+                    <button onclick="window.location.href='./user/marketplace/marketplace.php'">
                         <p>Marketplace</p>
                     </button>
                     <?php else: ?>
@@ -113,8 +116,26 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
 <!-- DESKTOP MODE -->
 <div class="navbar-center hidden lg:flex">
   <ul class="menu menu-horizontal px-1 text-dark text-base">
-    <li><a href="./landing-page.php">Home</a></li>
-    <li><a href="./user/tentang.php">Tentang kami</a></li>
+  <li>
+    <a href="./landing-page.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'landing-page.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'landing-page.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'landing-page.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'landing-page.php') ? '#1B5E20' : '' ?>;">
+        Home
+    </a>
+</li>
+    <li>
+    <a href="./user/tentang.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'tentang.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'tentang.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'tentang.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'tentang.php') ? '#1B5E20' : '' ?>;">
+        Tentang Kami
+    </a>
+  </li>
     <li>
       <details>
         <summary>Layanan</summary>
@@ -165,9 +186,25 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
         </ul>
       </details>
     </li>
-    <li><a href="./user/blog.php">Blog</a></li>
-    <li><a href="./user/kontak-kami.php">Kontak Kami</a></li>
-  </ul>
+    <li> <a href="./user/blog.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'blog.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'blog.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;">
+        Blog
+    </a>
+  </li>
+  <li> <a href="./user/kontak-kami.php"
+       style="padding: 8px; 
+              text-decoration: <?= ($current_page == 'kontak-kami.php') ? 'underline' : 'none' ?>; 
+              font-weight: <?= ($current_page == 'kontak-kami.php') ? 'bold' : 'normal' ?>;
+              color: <?= ($current_page == 'kontak-kami.php') ? '#1B5E20' : '' ?>;
+              text-decoration-color: <?= ($current_page == 'blog.php') ? '#1B5E20' : '' ?>;">
+        Kontak Kami
+    </a>
+  </li>  
+</ul>
 </div>
 
 

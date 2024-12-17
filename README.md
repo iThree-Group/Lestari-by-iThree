@@ -22,12 +22,6 @@ Start the development server:
     npm run dev
 ```
 
-- Update composer:
-
-```bash
-    composer update
-```
-
 - Open your browser and go to:
 
 ```bash

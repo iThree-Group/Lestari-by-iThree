@@ -18,6 +18,8 @@ $bank_id = isset($_GET['id']) ? $_GET['id'] : null;
 if (!$bank_id) {
     die('Bank ID tidak ditemukan. Silakan coba lagi.');
 }
+$request_id = isset($_GET['request_id']) ? intval($_GET['request_id']) : 0;
+
 
 // Insert new drop_off request if not already inserted in this session
 if (!isset($_SESSION['drop_off_inserted'])) {
@@ -73,7 +75,8 @@ $total_points = $request['total_points'];
     <link href="../../css/styles.css" rel="stylesheet">
     <title>Lestari - Drop Off</title>
       <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
@@ -313,7 +316,7 @@ $total_points = $request['total_points'];
             <!-- Drop Off Information -->
             <div class="flex justify-between items-center text-sm text-green-600 font-semibold">
                 <span><?= date('d M Y · H:i', strtotime($request['drop_off_request_created_at'])); ?></span>
-                <span><?= htmlspecialchars($request['user_email']); ?></span>
+                <span>Request ID <?= htmlspecialchars($request['request_id']); ?></span>
                 </div>
                 <hr class="border-dashed border-green-600 my-4">
             <!-- Drop Off Details -->
@@ -322,7 +325,10 @@ $total_points = $request['total_points'];
                     <h3 class="text-green-700 font-semibold text-sm">DROP OFF - LESTARI</h3>
                     <div class="bg-gray-50 rounded-lg shadow p-4 flex justify-between items-center">
                         <span>Total Poin</span>
-                        <span class="text-green-600 font-bold">$<?= number_format($request['total_points']); ?></span>
+                        <span class="text-green-600 font-bold"> <i class="fas fa-coins text-green-600"></i> 
+                        <?= number_format($request['total_points']); ?>
+                    </span>
+
                     </div>
                 </div>
                 <div>
@@ -332,35 +338,9 @@ $total_points = $request['total_points'];
                     </div>
                 </div>
             </div>
-            <!-- Button -->
-            <div class="mt-8 text-center">
-                <button onclick="toggleModal()" class="bg-gradient-to-r from-green to-dark-green text-white font-semibold rounded-full px-6 py-2 hover:bg-green-700">
-                    Klaim Poin
-                </button>
-            </div>
         </div>
     </main>
-    <!-- Modal -->
-    <div id="rewardModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
-     <div class="bg-white rounded-lg p-6 w-80 text-center relative">
-      <div class="absolute top-2 right-2 cursor-pointer" onclick="toggleModal()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-gray-700" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </div>
-      <div class="mb-4">
-        <img src="../../images/user/selamat.png" alt="Reward Icon" class="mx-auto">
-      </div>
-      <p class="text-green-700 font-semibold mb-4">Kamu mendapatkan poin</p>
-      <div class="bg-green-50 border border-green-500 rounded-lg p-4 flex justify-center items-center mb-4">
-        <span class="text-green-600 font-bold text-2xl">+ <?= number_format($request['total_points']); ?></span>
-      </div>
-      <button onclick="window.location.href='../../user/drop-off/poin.php'" class="bg-gradient-to-r from-green to-dark-green text-white py-2 px-4 rounded-full shadow-lg hover:bg-green-600">
-          Lihat Poin
-      </button>
-    </div>
-  </div>
+
 <!-- Footer -->
 <footer class="bg-gradient-to-r from-green to-dark-green text-white py-7">
   <div class="container mx-auto px-12">

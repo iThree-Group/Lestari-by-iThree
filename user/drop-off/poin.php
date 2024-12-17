@@ -330,27 +330,36 @@ while ($row = $result->fetch_assoc()) {
 
       <!-- Bagian Riwayat (Mengisi Sisa Ruang) -->
       <div class="flex-1 bg-white rounded-b-lg shadow-lg overflow-y-auto p-4 sm:p-6 space-y-4">
-        <?php
-        // Loop through each row of results and display it in the HTML
-        foreach ($rows as $row) {
-        ?>
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-100 rounded-lg p-4 shadow">
-            <div class="flex items-center space-x-4 mb-2 sm:mb-0">
-              <!-- Ikon sesuai tipe -->
-              <div class="w-12 h-12 <?= $row['type'] === 'Redeem' ? 'bg-red-600' : 'bg-[#1B5E20]' ?> rounded-full flex items-center justify-center">
-                <img src="../../images/user/<?= $row['type'] === 'Redeem' ? 'redeem.png' : 'recycle.png' ?>" class="w-7" alt="<?= $row['type'] ?> Icon">
+      <?php
+      // Loop through each row of results and display it in the HTML
+      foreach ($rows as $row) {
+          // Check if the type is 'Redeem' to disable the link
+          $is_redeem = $row['type'] === 'Redeem';
+          $link_class = $is_redeem ? 'pointer-events-none' : '';  // No opacity change
+      ?>
+          <a href="<?= $is_redeem ? '#' : '../../user/drop-off/riwayat-invoice.php?request_id=' . urlencode($row['id']); ?>" class="block <?= $link_class ?>">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-100 rounded-lg p-4 shadow hover:bg-gray-200 transition">
+                  <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+                      <!-- Ikon sesuai tipe -->
+                      <div class="w-12 h-12 <?= $row['type'] === 'Redeem' ? 'bg-red-600' : 'bg-[#1B5E20]' ?> rounded-full flex items-center justify-center">
+                          <img src="../../images/user/<?= $row['type'] === 'Redeem' ? 'reedem1.png' : 'recycle.png' ?>" class="w-7" alt="<?= $row['type'] ?> Icon">
+                      </div>
+                      <div>
+                          <h2 class="font-bold text-sm sm:text-base <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-[#1B5E20]' ?>"><?= $row['type'] === 'Redeem' ? 'Reward Redeem' : 'Reward Drop Off' ?></h2>
+                          <p class="text-xs sm:text-sm text-gray-500"><?= date('d M Y, H:i', strtotime($row['created_at'])); ?></p>
+                      </div>
+                  </div>
+                  <span class="text-base sm:text-xl font-bold <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-green-700' ?>"><?= number_format($row['points']); ?> Poin</span>
               </div>
-              <div>
-                <h2 class="font-bold text-sm sm:text-base <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-[#1B5E20]' ?>"><?= $row['type'] === 'Redeem' ? 'Reward Redeem' : 'Reward Drop Off' ?></h2>
-                <p class="text-xs sm:text-sm text-gray-500"><?= date('d M Y, H:i', strtotime($row['created_at'])); ?></p>
-              </div>
-            </div>
-            <span class="text-base sm:text-xl font-bold <?= $row['type'] === 'Redeem' ? 'text-red-600' : 'text-green-700' ?>"><?= number_format($row['points']); ?> Poin</span>
-          </div>
-        <?php } ?>
+          </a>
+      <?php } ?>
+
       </div>
     </div>
   </div>
 
-  </main>
+</main>
+</section>
+
+
 </section>

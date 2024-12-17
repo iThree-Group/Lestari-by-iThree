@@ -31,10 +31,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
+        // Jika pertama kali atau tidak ada nilai failed_attempts, set ke 3
+        $failed_attempts = ($user['failed_attempts'] === null) ? 3 : $user['failed_attempts'];
+
         // Verifikasi password
         if (password_verify($password, $user['user_password'])) {
             // Jika login sukses, reset percobaan gagal
-            $stmt = $conn->prepare("UPDATE users SET failed_attempts = 0, lockout_until = NULL WHERE user_email = ?");
+            $stmt = $conn->prepare("UPDATE users SET failed_attempts = 3, lockout_until = NULL WHERE user_email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
 
@@ -42,23 +45,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['loggedin'] = true;
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_email'] = $user['user_email'];
-            $_SESSION['user_name'] = $user['user_name'];  // Menyimpan nama pengguna dalam sesi
+            $_SESSION['user_name'] = $user['user_name'];
 
             // Redirect ke landing page
             header("Location: ../landing-page.php");
             exit;
         } else {
-            // Jika password salah, tambahkan percobaan gagal
-            $failed_attempts = $user['failed_attempts'] + 1;
+            // Jika password salah, kurangi percobaan gagal
+            $failed_attempts--;
 
-            if ($failed_attempts >= 3) {
+            if ($failed_attempts <= 0) {
                 // Set waktu blokir 3 menit
                 $lockout_until = date('Y-m-d H:i:s', strtotime('+3 minutes'));
-                $stmt = $conn->prepare("UPDATE users SET failed_attempts = ?, lockout_until = ? WHERE user_email = ?");
-                $stmt->bind_param("iss", $failed_attempts, $lockout_until, $email);
+                $stmt = $conn->prepare("UPDATE users SET failed_attempts = 0, lockout_until = ? WHERE user_email = ?");
+                $stmt->bind_param("ss", $lockout_until, $email);
                 $stmt->execute();
 
-                $_SESSION['error_message'] = "Akun Anda terkunci setelah 3 kali percobaan salah.";
+                $_SESSION['error_message'] = "Akun Anda terkunci sementara setelah 3 kali percobaan salah.";
                 header("Location: ../user/signin.php");
                 exit;
             } else {
@@ -67,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->bind_param("is", $failed_attempts, $email);
                 $stmt->execute();
 
-                $_SESSION['error_message'] = "Password salah! Percobaan ke-$failed_attempts.";
+                $_SESSION['error_message'] = "Password salah! Anda memiliki $failed_attempts percobaan lagi.";
                 header("Location: ../user/signin.php");
                 exit;
             }
@@ -82,3 +85,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 $conn->close();
 ?>
+

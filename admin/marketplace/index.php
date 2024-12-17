@@ -110,7 +110,7 @@ $result = $stmt->get_result();
             <!-- HEADER -->
             <div class="flex flex-row justify-between bg-gradient-to-r from-[#1E5E3F] to-[#3FC483] w-full h-[88px] px-[23px] rounded-[20px] text-light font-extrabold text-[32px] items-center">
                 <h1>Marketplace</h1>
-                <div class="dropdown dropdown-end self-center">
+                <div class="dropdown dropdown-end self-center flex items-center">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                         <div class="w-[50px] rounded-full">
                         <img

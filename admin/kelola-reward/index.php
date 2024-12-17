@@ -151,15 +151,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
             
             <!-- BUTTONS -->
             <div class="flex flex-row gap-[22px] mt-[31px] ">
-                <button class="btn btn-warning h-[42px] px-[27px] text-light rounded-[20px] border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./'">
-                    Kelola Produk Reward
+                <button class="btn btn-warning h-[42px] px-6 text-light rounded-xl border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./add.php'">
+                    <span>Tambah produk</span>
                 </button>
-                <button class="btn btn-warning h-[42px] px-[27px] text-light rounded-[20px] mr-auto border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./redeem-list.php'">
+                <button class="btn btn-warning h-[42px] px-6 text-light rounded-xl mr-auto border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./redeem-list.php'">
                     Daftar Tukar Reward
-                </button>
-                <button onclick="location.href='./add.php'" class="bg-[#2980B9] h-10 flex flex-row gap-[18px] content-center w-[279px] pl-[27px] rounded-[5px] items-center self-center border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)]">
-                    <img src="../../images/admin/Plus.png" class="h-[30px]" alt="Add">
-                    <span class="text-light text-base font-extrabold">Tambah produk</span>
                 </button>
             </div>
             <!-- BUTTONS END -->
@@ -280,25 +276,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                 <dialog id="edit" class="modal" <?= $modal_open ? 'open' : ''; ?>>
                     <div class="modal-box bg-light min-w-[550px] h-auto rounded-[20px] gap-[18px] flex flex-col px-10 py-7">
                         <h3 class="text-2xl font-bold text-dark">Edit Produk</h3>
-                        <form method="post" enctype="multipart/form-data" class="flex flex-col gap-[18px] w-full text-dark">
+                        <form method="post" enctype="multipart/form-data" class="flex flex-col gap-[18px] w-full text-dark dark:[color-scheme:light]">
                             <input type="hidden" name="reward_id" value="<?= htmlspecialchars($edit_data['reward_id']); ?>" />
                             
                             <!-- Nama Produk -->
                             <div class="flex flex-col gap-[9px]">
                                 <label for="reward_name" class="text-sm font-medium">Nama Produk</label>
-                                <input type="text" id="reward_name" name="reward_name" value="<?= htmlspecialchars($edit_data['reward_name']); ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
+                                <input type="text" id="reward_name" name="reward_name" value="<?= htmlspecialchars($edit_data['reward_name']); ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs rounded-lg" required>
                             </div>
                             
                             <!-- Jumlah Poin -->
                             <div class="flex flex-col gap-[9px]">
                                 <label for="reward_points_required" class="text-sm font-medium">Jumlah Poin</label>
-                                <input type="number" id="reward_points_required" name="reward_points_required" value="<?= $edit_data['reward_points_required']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
+                                <input type="number" id="reward_points_required" name="reward_points_required" value="<?= $edit_data['reward_points_required']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs rounded-lg" required>
                             </div>
                             
                             <!-- Stok -->
                             <div class="flex flex-col gap-[9px]">
                                 <label for="stock" class="text-sm font-medium">Stok</label>
-                                <input type="number" id="stock" name="stock" value="<?= $edit_data['stock']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" required>
+                                <input type="number" id="stock" name="stock" value="<?= $edit_data['stock']; ?>" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs rounded-lg" required>
                             </div>
 
                             <!-- Gambar -->
@@ -307,8 +303,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
                                 <!-- Tampilkan gambar saat ini -->
                                 <img src="<?= htmlspecialchars($edit_data['reward_image']); ?>" alt="Gambar Produk" class="w-20 h-20 object-cover rounded-md border">
                                 <!-- Input file untuk mengganti gambar -->
-                                <input type="file" id="reward_image" name="reward_image" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs" accept="image/*">
-                                <small class="text-gray-500 text-xs">Kosongkan jika tidak ingin mengganti gambar.</small>
+                                <input type="file" id="reward_image" name="reward_image" class="w-full h-7 bg-light border border-gray px-1.5 font-normal text-xs rounded-lg" accept="image/*">
+                                <small class="opacity-50 text-xs italic">*Kosongkan jika tidak ingin mengganti gambar</small>
                             </div>
                             
                             <!-- Tombol Aksi -->

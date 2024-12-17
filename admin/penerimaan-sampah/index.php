@@ -209,13 +209,13 @@ if ($conn) {
             <option <?php if (isset($_GET['status-sampah']) && $_GET['status-sampah'] == 'Accepted') echo 'selected'; ?>>Accepted</option>
             <option <?php if (isset($_GET['status-sampah']) && $_GET['status-sampah'] == 'Rejected') echo 'selected'; ?>>Rejected</option>
         </select>
-        <select id="jenis-sampah" name="jenis-sampah" class="w-[223px] h-auto bg-light border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] px-[9px] text-base font-medium">
+        <select id="jenis-sampah" name="jenis-sampah" class="w-[223px] h-auto bg-light border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[5px] px-[9px] text-base font-medium">
             <option value="" <?php if (!isset($_GET['jenis-sampah'])) echo 'selected'; ?>>Semua Jenis Sampah</option>
             <option <?php if (isset($_GET['jenis-sampah']) && $_GET['jenis-sampah'] == 'Plastik') echo 'selected'; ?>>Plastik</option>
             <option <?php if (isset($_GET['jenis-sampah']) && $_GET['jenis-sampah'] == 'Kertas') echo 'selected'; ?>>Kertas</option>
             <option <?php if (isset($_GET['jenis-sampah']) && $_GET['jenis-sampah'] == 'Logam') echo 'selected'; ?>>Logam</option>
         </select>
-        <input type="date" id="date" name="date" <?php if (isset($_GET['date'])) echo 'value="' . $_GET['date'] . '"'; ?> class="w-[223px] h-auto bg-light text-dark dark:[color-scheme:light] border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] px-[9px] text-base font-medium">
+        <input type="date" id="date" name="date" <?php if (isset($_GET['date'])) echo 'value="' . $_GET['date'] . '"'; ?> class="w-[223px] h-auto bg-light text-dark dark:[color-scheme:light] border border-gray shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] rounded-[5px] px-[9px] text-base font-medium">
         <button type="submit" class="btn btn-success bg-[#2E9E5D] rounded-[5px] w-[101px] h-[34px] text-base font-semibold text-light shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] border border-gray">Filter</button>
     </form>
     <div class="table mt-10">

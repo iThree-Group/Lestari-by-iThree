@@ -67,7 +67,7 @@ $redeem_result = $stmt->get_result();
         <div class="bg-light-bg-content w-full h-auto pb-11 px-5 pt-5">
              <!-- HEADER -->
              <div class="flex flex-row justify-between bg-gradient-to-r from-[#1E5E3F] to-[#3FC483] w-full h-[88px] px-[23px] rounded-[20px] text-light font-extrabold text-[32px] items-center">
-                <h1>Kelola Reward</h1>
+                <h1>Daftar Tukar Reward</h1>
                 <div class="dropdown dropdown-end self-center">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar flex items-center">
                         <div class="w-[50px] rounded-full">
@@ -104,11 +104,8 @@ $redeem_result = $stmt->get_result();
             
             <!-- BUTTONS -->
             <div class="flex flex-row gap-[22px] mt-[31px] ">
-                <button class="btn btn-warning h-[42px] px-[27px] text-light rounded-[20px] border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./'">
-                    Kelola Produk Reward
-                </button>
-                <button class="btn btn-warning h-[42px] px-[27px] text-light rounded-[20px] mr-auto border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./redeem-list.php'">
-                    Daftar Tukar Reward
+                <button class="btn btn-warning h-[42px] px-6 text-light rounded-xl border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./'">
+                    Kembali
                 </button>
             </div>
             <!-- BUTTONS END -->

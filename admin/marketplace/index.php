@@ -146,26 +146,26 @@ $result = $stmt->get_result();
             
           <!-- BUTTONS -->
           <div class="mt-7 w-1/3">
-                <form action="index.php" method="get" class="flex flex-col lg:flex-row gap-4">
+                <form action="index.php" method="get" class="flex flex-col lg:flex-row gap-4 h-auto">
                     <!-- Input Pencarian -->
                     <input 
                         type="text" 
                         name="search" 
                         placeholder="Cari produk..." 
                         value="<?= htmlspecialchars($search) ?>" 
-                        class="min-w-72 px-1 text-dark text-sm font-light bg-light rounded-[5px] py-1.5 h-[34px] border border-gray">
+                        class="min-w-72 px-1 text-dark text-sm font-light bg-light rounded-[5px] py-1.5 h-auto border border-gray">
                     
                     <!-- Pilihan Urutkan -->
                     <select 
                         name="urutkan" 
-                        class="w-auto h-[34px] bg-light border border-gray rounded-[5px] text-sm px-3 py-1.5 font-medium text-dark">
+                        class="w-auto h-auto bg-light border border-gray rounded-[5px] text-sm px-3 py-1.5 font-medium text-dark">
                             <option value="">Urutkan Berdasarkan</option>
                             <option value="harga_asc" <?= $urutkan === 'harga_asc' ? 'selected' : '' ?>>Harga Termurah</option>
                             <option value="harga_desc" <?= $urutkan === 'harga_desc' ? 'selected' : '' ?>>Harga Termahal</option>
                             <option value="nama" <?= $urutkan === 'nama' ? 'selected' : '' ?>>Nama Produk</option>
                     </select>
                     <!-- Tombol Cari -->
-                      <button type="submit" class="btn-success bg-[#2E9E5D] text-light w-auto py-2 px-4 text-base font-medium rounded-md shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] border border-gray">
+                      <button type="submit" class="btn-success bg-[#2E9E5D] text-light w-auto h-auto px-4 text-base font-medium rounded-md shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] border border-gray">
                          Cari
                      </button>
                 </form>

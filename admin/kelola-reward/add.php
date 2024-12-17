@@ -144,20 +144,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_reward'])) {
                 <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-9 mt-[26px] text-dark">
                     <div class="flex flex-col gap-[10px] w-1/2">
                         <label for="reward_name" class="px-1 text-2xl font-medium">Nama Produk</label>
-                        <input type="text" id="reward_name" name="reward_name" placeholder="Masukkan nama produk" class="w-full h-12 bg-light border border-gray px-3 font-light shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" required>
+                        <input type="text" id="reward_name" name="reward_name" placeholder="Masukkan nama produk" class="w-full h-12 bg-light border border-gray px-3 font-light shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-lg" required>
                     </div>
                     <div class="flex flex-col gap-[10px] w-full">
                         <label for="reward_points_required"  class="px-1 text-2xl font-medium">Jumlah Poin</label>
-                        <input type="number" id="reward_points_required" name="reward_points_required"  min="0" placeholder="Masukkan Jumlah Poin" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" required>
+                        <input type="number" id="reward_points_required" name="reward_points_required"  min="0" placeholder="Masukkan Jumlah Poin" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-lg" required>
                     </div>
                     <div class="flex flex-col gap-[10px] w-full">
                         <label for="stock" class="px-1 text-2xl font-medium">Stok Produk</label>
-                        <input type="number" id="stock" name="stock" min="0" placeholder="Masukkan Jumlah Stok" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]" required>
+                        <input type="number" id="stock" name="stock" min="0" placeholder="Masukkan Jumlah Stok" class="w-full h-12 bg-light border border-gray px-3 font-light dark:[color-scheme:light] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-lg" required>
                     </div>
 
                     <div class="flex flex-col gap-[10px] w-full">
                         <label for="reward_image" class="px-1 text-2xl font-medium">Gambar Produk</label>
-                        <div class="w-full min-h-[204px] bg-light border-dashed border-2 border-gray py-3 font-light flex items-center justify-center">
+                        <div class="w-full min-h-[204px] bg-light border-dashed border-2 border-gray py-3 font-light flex items-center justify-center rounded-lg">
                             <input type="file" name="reward_image" accept="image/*" class="file-input file-input-ghost dark:[color-scheme:light]">
                         </div>
                     </div>

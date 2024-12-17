@@ -9250,6 +9250,10 @@ html:has(.drawer-open.drawer-open){
   height: 100vh;
 }
 
+.h-\[100px\]{
+  height: 100px;
+}
+
 .max-h-\[800px\]{
   max-height: 800px;
 }
@@ -11984,6 +11988,10 @@ html:has(.drawer-open.drawer-open){
 
 .opacity-50{
   opacity: 0.5;
+}
+
+.opacity-75{
+  opacity: 0.75;
 }
 
 .bg-blend-normal{

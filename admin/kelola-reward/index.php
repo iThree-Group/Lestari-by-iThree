@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_reward'])) {
             <!-- BUTTONS -->
             <div class="flex flex-row gap-[22px] mt-[31px] ">
                 <button class="btn btn-warning h-[42px] px-6 text-light rounded-xl border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./add.php'">
-                    <span>Tambah produk</span>
+                    <span>Tambah Produk</span>
                 </button>
                 <button class="btn btn-warning h-[42px] px-6 text-light rounded-xl mr-auto border border-dark bg-[#F6AC0A] shadow-[0px_4px_4px_-0px_rgba(0,0,0,0.25)] font-medium text-xl" onclick="location.href='./redeem-list.php'">
                     Daftar Tukar Reward

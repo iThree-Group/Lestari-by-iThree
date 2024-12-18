@@ -270,7 +270,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             name="marketplace_product_name"
             id="product-name"
             class="w-full h-10 mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            placeholder="Maukkan Nama Produk"
+            placeholder="Masukkan Nama Produk"
             required
           />
         </div>

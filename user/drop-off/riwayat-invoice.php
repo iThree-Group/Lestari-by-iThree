@@ -24,7 +24,7 @@ $query = "SELECT d.request_id, d.status, d.drop_off_request_created_at, u.user_e
           INNER JOIN users u ON d.user_id = u.user_id
           LEFT JOIN detail_request dr ON d.request_id = dr.request_id
           LEFT JOIN waste w ON dr.waste_id = w.waste_id
-          WHERE d.request_id = ? AND d.status = 'accepted'
+          WHERE d.request_id = ?
           GROUP BY d.request_id";
 
 $stmt = $conn->prepare($query);
@@ -82,8 +82,14 @@ if ($result->num_rows > 0) {
     <h3 class="text-green-700 font-semibold text-sm">Status Verifikasi</h3>
     <p class="text-sm text-gray-600">
         Status: 
-        <span class="<?= htmlspecialchars($invoice['status']) === 'accepted' ? 'text-green-600 font-bold' : ''; ?>">
-            <?= htmlspecialchars(ucfirst($invoice['status'])); ?>
+        <span class="<?= 
+                          $invoice['status'] === 'waiting' 
+                              ? 'text-yellow-500' 
+                              : ($invoice['status'] === 'rejected' 
+                                  ? 'text-red-500' 
+                                  : 'text-green-600'); 
+                      ?> font-bold">
+                          <?= htmlspecialchars(ucfirst($invoice['status'])); ?>
         </span>
     </p>
 </div>

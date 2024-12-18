@@ -242,10 +242,6 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
         <li>Kumpulkan dalam wadah terpisah</li>
         <li>Serahkan ke bank sampah LESTARI terdekat</li>
         </ol>
-      </div>
-      <button onclick="window.location.href='../../landing-page.php'" class="mt-6 px-6 py-2 bg-gradient-to-r from-green to-dark-green text-white rounded-lg hover:bg-green-700">
-        Kembali
-    </button>    </div>
   </main>
 
   <!-- modal  -->

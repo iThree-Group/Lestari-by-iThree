@@ -232,7 +232,7 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
     <div class="bg-white rounded-lg shadow-md p-6">
       <p class="text-gray-700 mb-6 text-justify">
       Besi dan logam adalah material yang dapat didaur ulang 100% tanpa batas dan tanpa kehilangan kualitas. Daur ulang logam menghemat 95% energi dibandingkan produksi dari bahan mentah. </p>    
-       <div class="bg-green-100 p-6 rounded-lg shadow-inner">
+      <div class="bg-green-100 p-6 rounded-lg shadow-inner">
         <h2 class="text-lg font-bold text-[#1B5E20] mb-2">Cara Pengolahan Besi & Logam :</h2>
         <ol class="list-decimal pl-5 text-gray-700 space-y-2">
         <li>Pisahkan berdasarkan jenis logam (besi, tembaga, kuningan)</li>
@@ -241,10 +241,6 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
         <li>Simpan di tempat kering untuk mencegah korosi</li>
         <li>Serahkan ke bank sampah LESTARI terdekat</li>
         </ol>
-      </div>
-      <button onclick="window.location.href='../../landing-page.php'" class="mt-6 px-6 py-2 bg-gradient-to-r from-green to-dark-green text-white rounded-lg hover:bg-green-700">
-        Kembali
-    </button>    </div>
   </main>
 
   <!-- modal  -->

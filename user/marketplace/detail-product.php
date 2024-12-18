@@ -296,9 +296,6 @@ $conn->close();
 
     <!-- Product Details -->
     <div>
-        <h2 class="text-green-700 text-2xl font-bold mb-4 hidden md:block"><?= htmlspecialchars($row['marketplace_product_name']); ?></h2>
-        <p class="text-lg text-gray-700 font-semibold mb-4 hidden md:block">Rp <?= number_format($row['marketplace_price'], 0, ',', '.'); ?></p>
-
         <!-- Description Card -->
         <div class="bg-white shadow-md rounded-lg p-6">
             <h3 class="text-green-700 text-xl font-bold">Deskripsi Produk</h3>

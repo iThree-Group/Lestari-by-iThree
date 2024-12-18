@@ -285,7 +285,8 @@ if (basename($_SERVER['PHP_SELF']) != 'landing-page.php') {
             class="w-full h-10 mt-2 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             placeholder="Masukkan Harga Produk"
             required
-          />
+            />
+            <small class="opacity-100 text-s italic">*angka saja, tanpa karakter lain</small>
         </div>
 
         <!-- Deskripsi Produk -->
